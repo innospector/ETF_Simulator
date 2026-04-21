@@ -849,11 +849,11 @@ const S = {
   scenario: 'base',
 };
 
-const SCENARIO_MULT = { bear: 0.45, base: 1.0, bull: 1.55 };
+const SCENARIO_MULT = { bear: 1.0, base: 1.0, bull: 1.0 };
 const SCENARIO_LABELS = {
-  bear: '기본 대비 45% 수준 적용 (2000 닷컴·2008·2022형 장기 하강 사이클)',
+  bear: '장기 하강 사이클 (2000 닷컴·2008·2022년형 지속)',
   base: '애널리스트 컨센서스 (HBM CAGR 18%·TSMC +30%·SK하이닉스 30% 전망 반영)',
-  bull: '기본 대비 155% 적용 (SOXX 10Y CAGR 27%·SMH 31% AI 슈퍼사이클 지속)',
+  bull: 'AI 슈퍼사이클 지속 (SOXX 10Y CAGR 27%·SMH 31% 근접)',
 };
 
 let growthChart = null;
@@ -1146,17 +1146,17 @@ function onReturn(idx, val) {
 // =============================================
 // SCENARIO
 // =============================================
-let SCENARIO_BASE = [12, 22, 18];
+let SCENARIO_BASE = [12, 18, 22];
 function setScenario(sc) {
   S.scenario = sc;
   document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
   document.querySelector(`.scenario-btn.${sc}`).classList.add('active');
 
-  // Apply preset returns
+  // Apply preset returns (analyst-based, no multiplier stacking)
   const presets = {
-    bear: [5,  8,  4],
-    base: SCENARIO_BASE,
-    bull: [18, 35, 28],
+    bear: [5,  8,  10],  // 하강 사이클 10Y CAGR
+    base: SCENARIO_BASE, // 애널리스트 컨센서스
+    bull: [19, 28, 34],  // SOXX/SMH 10Y CAGR 근접
   };
   presets[sc].forEach((v, i) => {
     S.returns[i] = v;
