@@ -7,17 +7,17 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root {
-  --bg: #0a0c14;
-  --bg2: #0f1120;
-  --bg3: #141728;
-  --surface: #1a1e30;
-  --surface2: #222740;
-  --surface3: #2a3050;
-  --border: #2e3454;
-  --border2: #3a4060;
-  --text: #f0f2ff;
-  --text-sub: #8b92b8;
-  --text-muted: #555e88;
+  --bg: #f6f8fc;
+  --bg2: #ffffff;
+  --bg3: #eef3ff;
+  --surface: #ffffff;
+  --surface2: #f7f9ff;
+  --surface3: #e7ecf7;
+  --border: #d9e1f0;
+  --border2: #c7d3ea;
+  --text: #1a2340;
+  --text-sub: #4b5a80;
+  --text-muted: #6e7b9c;
   --blue: #4f8fff;
   --blue-glow: rgba(79,143,255,0.18);
   --green: #00d68f;
@@ -34,7 +34,7 @@
   --c3: #b57bff;   /* SOL 후공정 */
   --radius: 18px;
   --radius-sm: 12px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow: 0 4px 20px rgba(34, 55, 112, 0.08);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
@@ -79,7 +79,7 @@ body {
 
 /* ─── HERO ─── */
 .hero {
-  background: linear-gradient(135deg, #0d1535 0%, #101828 50%, #0e0a20 100%);
+  background: linear-gradient(135deg, #f5f8ff 0%, #eef4ff 55%, #f7f4ff 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 44px 48px;
@@ -310,7 +310,7 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
 .result-value { font-size: 26px; font-weight: 900; line-height: 1; }
 .result-sub { font-size: 13px; color: var(--text-sub); margin-top: 6px; font-weight: 600; }
 .result-main {
-  background: linear-gradient(135deg, var(--bg3), var(--surface));
+  background: linear-gradient(135deg, #f4f8ff, #ffffff);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 24px;
@@ -349,11 +349,11 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
   border-radius: 50%;
   opacity: 0.07;
 }
-.etf-card.c1 { background: #0d1629; border-color: rgba(79,143,255,0.25); }
+.etf-card.c1 { background: #f3f8ff; border-color: rgba(79,143,255,0.28); }
 .etf-card.c1::after { background: var(--c1); }
-.etf-card.c2 { background: #091a16; border-color: rgba(0,214,143,0.25); }
+.etf-card.c2 { background: #effcf7; border-color: rgba(0,214,143,0.28); }
 .etf-card.c2::after { background: var(--c2); }
-.etf-card.c3 { background: #130d20; border-color: rgba(181,123,255,0.25); }
+.etf-card.c3 { background: #f8f2ff; border-color: rgba(181,123,255,0.28); }
 .etf-card.c3::after { background: var(--c3); }
 
 .etf-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
