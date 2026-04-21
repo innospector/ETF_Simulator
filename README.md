@@ -2,6 +2,8 @@
 
 한국 반도체 ETF 3종(KODEX 반도체, TIGER 반도체TOP10, SOL 반도체후공정)에 대한 DCA(Dollar Cost Averaging) 장기 투자 시뮬레이터.
 
+최근 레이아웃은 `result-first` 흐름으로 조정되어, 데스크톱/모바일 모두 진입 즉시 `투자 결과 요약 + 자산 성장 시뮬레이션`을 먼저 확인할 수 있습니다.
+
 - **라이브**: https://etf-simulator-epur.vercel.app
 - **저장소**: https://github.com/innospector/ETF_Simulator
 

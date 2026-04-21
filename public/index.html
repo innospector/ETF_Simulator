@@ -78,63 +78,45 @@ body {
 .main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
 
 /* ─── HERO ─── */
-.hero {
+.hero-top-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.hero-card {
   background: linear-gradient(135deg, #f5f8ff 0%, #eef4ff 55%, #f7f4ff 100%);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 44px 48px;
-  margin-bottom: 28px;
-  position: relative; overflow: hidden;
+  padding: 16px 18px;
 }
-.hero::before {
-  content: '';
-  position: absolute; top: -100px; right: -60px;
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(79,143,255,0.08) 0%, transparent 70%);
-  pointer-events: none;
+.hero-title {
+  font-size: 34px; font-weight: 900; letter-spacing: -1px;
+  line-height: 1.18; margin-bottom: 6px;
 }
-.hero::after {
-  content: '';
-  position: absolute; bottom: -80px; left: 100px;
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(181,123,255,0.06) 0%, transparent 70%);
-  pointer-events: none;
-}
-.hero-tag {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(79,143,255,0.12);
-  border: 1px solid rgba(79,143,255,0.25);
-  color: var(--blue); padding: 5px 14px; border-radius: 20px;
-  font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
-  margin-bottom: 18px;
-}
-.hero h1 {
-  font-size: 36px; font-weight: 900; letter-spacing: -1px;
-  line-height: 1.2; margin-bottom: 12px;
-}
-.hero h1 span { background: linear-gradient(90deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-.hero-desc { font-size: 14px; color: var(--text-sub); line-height: 1.7; max-width: 580px; }
+.hero-title span { background: linear-gradient(90deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-desc { font-size: 14px; color: var(--text-sub); line-height: 1.5; max-width: none; }
 .hero-howto {
-  margin-top: 16px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 12px 14px;
-  max-width: 700px;
+  margin-top: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  max-width: none;
 }
 .hero-howto-title {
-  font-size: 12px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--blue);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 .hero-howto-list {
   list-style: none;
   display: grid;
-  gap: 6px;
-  font-size: 12px;
+  gap: 4px;
+  font-size: 17px;
   color: var(--text-sub);
-  line-height: 1.5;
+  line-height: 1.35;
 }
 .hero-howto-list li b { color: var(--text); }
 .hero-chips { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
@@ -146,9 +128,9 @@ body {
 
 /* ─── LAYOUT ─── */
 .layout { display: flex; flex-direction: column; gap: 24px; }
-.col-left { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.col-left { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
 .col-right { display: flex; flex-direction: column; gap: 20px; }
-.result-chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.result-chart-row { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 20px; }
 
 /* ─── CARD ─── */
 .card {
@@ -392,6 +374,49 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
 .breakdown-table th:last-child { border-radius: 0 8px 8px 0; }
 .breakdown-table td { padding: 13px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .breakdown-table tr:last-child td { border-bottom: none; }
+.analysis-foot-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.analysis-foot-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.analysis-foot-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--blue);
+  margin-bottom: 8px;
+}
+.analysis-foot-text {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.6;
+}
+.analysis-source-list {
+  list-style: none;
+  display: grid;
+  gap: 7px;
+}
+.analysis-source-list li {
+  font-size: 11px;
+  color: var(--text-sub);
+  line-height: 1.45;
+}
+.analysis-source-list a {
+  color: var(--blue);
+  text-decoration: none;
+}
+.analysis-source-list a:hover { text-decoration: underline; }
+.analysis-source-note {
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
 
 /* ─── MILESTONE ─── */
 .milestone-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
@@ -421,6 +446,62 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
   color: var(--text-muted); padding: 4px 12px; border-radius: 20px;
   font-size: 11px; font-weight: 600;
 }
+.result-context {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-sub);
+  text-align: right;
+  max-width: 360px;
+  line-height: 1.4;
+}
+.summary-card .section-title,
+.growth-card .section-title {
+  font-size: 24px;
+  color: #2da9c9;
+}
+.col-left .card-title { font-size: 19px; }
+.col-left .slider-name { font-size: 15px; }
+.col-left .slider-value { font-size: 21px; }
+.col-left .slider-range span { font-size: 12px; }
+.col-left .weight-name { font-size: 15px; }
+.col-left .weight-sub { font-size: 13px; }
+.col-left .weight-num { font-size: 24px; }
+.col-left .weight-total-label { font-size: 14px; }
+.col-left .weight-total-val { font-size: 18px; }
+.col-left .scenario-btn { font-size: 14px; }
+.milestone-card .ms-year { font-size: 15px; }
+.milestone-card .ms-amount { font-size: 22px; }
+.milestone-card .ms-gain { font-size: 15px; }
+.milestone-card .ms-invested { font-size: 14px; }
+.etf-grid .etf-title { font-size: 17px; }
+.etf-grid .etf-code { font-size: 13px; }
+.etf-grid .etf-stat-v { font-size: 16px; }
+.etf-grid .etf-stat-k { font-size: 12px; }
+.etf-grid .etf-desc { font-size: 14px; }
+.breakdown-table { font-size: 15px; }
+.breakdown-table th { font-size: 15px; }
+.analysis-foot-title { font-size: 14px; }
+.analysis-foot-text { font-size: 14px; }
+.analysis-source-list li { font-size: 13px; }
+.analysis-source-note { font-size: 12px; }
+#etf-analysis-card .section-title { font-size: 20px; }
+#etf-analysis-card .etf-title { font-size: 21px; }
+.result-chart-row { gap: 14px; }
+.summary-card,
+.growth-card { padding: 18px; }
+.summary-card .section-head,
+.growth-card .section-head { margin-bottom: 10px; }
+.summary-card .data-status { margin-bottom: 8px; }
+.summary-card .result-main { padding: 16px; margin-bottom: 10px; }
+.summary-card .result-main-label { margin-bottom: 6px; }
+.summary-card .result-main-sub { margin-top: 4px; }
+.summary-card .result-grid { gap: 10px; }
+.summary-card .result-card { padding: 14px; }
+.summary-card .result-label { margin-bottom: 6px; }
+.summary-card .result-sub { margin-top: 4px; }
+.summary-card .calc-note { margin-top: 10px; padding: 8px 10px; }
+.growth-card .chart-legend-custom { margin-bottom: 8px; gap: 12px; }
+.growth-card .chart-wrap { min-height: 240px; }
 .data-status {
   margin-bottom: 12px;
   display: flex;
@@ -442,7 +523,7 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
 .mode-live { color: var(--green); border-color: rgba(0,214,143,0.45); }
 .mode-fallback { color: var(--orange); border-color: rgba(255,140,66,0.45); }
 .data-updated-at {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 .calc-note {
@@ -482,21 +563,42 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
 
 /* ─── RESPONSIVE ─── */
 @media (max-width: 1100px) {
+  .layout { gap: 20px; }
   .col-left { grid-template-columns: repeat(2, 1fr); }
+  .result-chart-row { grid-template-columns: 1fr; }
   .milestone-row { grid-template-columns: repeat(3, 1fr); }
+  .result-main-value { font-size: 38px; }
+  .hero-top-row { grid-template-columns: 1fr; }
 }
 @media (max-width: 900px) {
-  .result-chart-row { grid-template-columns: 1fr; }
+  .main { padding: 24px 18px; }
+  .card { padding: 22px; }
 }
 @media (max-width: 800px) {
+  .layout { gap: 16px; }
   .col-left { grid-template-columns: 1fr; }
   .etf-grid { grid-template-columns: 1fr; }
+  .result-main-value { font-size: 34px; }
+  .result-value { font-size: 23px; }
+  .section-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .result-context { text-align: left; max-width: 100%; }
 }
 @media (max-width: 640px) {
   .result-grid { grid-template-columns: 1fr; }
   .milestone-row { grid-template-columns: repeat(2, 1fr); }
-  .hero { padding: 30px 24px; }
-  .hero h1 { font-size: 26px; }
+  .hero-title { font-size: 26px; }
+  .main { padding: 18px 12px; }
+  .card { padding: 18px; }
+  .result-main { padding: 18px; }
+  .result-main-value { font-size: 30px; letter-spacing: -1px; }
+  .hero-top-row { gap: 8px; margin-bottom: 10px; }
+  .hero-card { padding: 10px 12px; }
+  .summary-card,
+  .growth-card { padding: 14px; }
+  .summary-card .result-main { padding: 14px; }
+  .summary-card .result-card { padding: 12px; }
+  .growth-card .chart-wrap { min-height: 210px; }
+  .analysis-foot-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -519,25 +621,253 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
 <main class="main">
 
   <!-- HERO -->
-  <div class="hero">
-    <div class="hero-tag">SEMICONDUCTOR ETF · DCA STRATEGY</div>
-    <h1>반도체 ETF 3종으로<br><span>15년 자산을 설계하다</span></h1>
-    <div class="hero-desc" style="font-weight: 600; font-size: 15px; margin-top: 10px;">
-      KODEX 반도체(안정코어) · TIGER 반도체TOP10(성장엔진) · SOL 반도체후공정(알파)
+  <div class="hero-top-row">
+    <div class="hero-card">
+      <h1 class="hero-title">반도체 ETF 3종으로<br><span>15년 자산을 설계하다</span></h1>
+      <div class="hero-desc" style="font-weight: 600; font-size: 15px; margin-top: 6px;">
+        KODEX 반도체(안정코어) · TIGER 반도체TOP10(성장엔진) · SOL 반도체후공정(알파)
+      </div>
     </div>
-    <div class="hero-howto">
-      <div class="hero-howto-title">처음 쓰는 사람도 30초 사용법</div>
-      <ul class="hero-howto-list">
-        <li><b>1)</b> 얼마나 오래 모을지 고르세요. (예: 15년)</li>
-        <li><b>2)</b> 처음 돈 + 매달 넣을 돈을 정하세요.</li>
-        <li><b>3)</b> ETF 비중을 나눠요. (합계는 100%)</li>
-        <li><b>4)</b> 약세/기본/강세를 눌러 결과를 비교하세요.</li>
-      </ul>
+    <div class="hero-card">
+      <div class="hero-howto">
+        <div class="hero-howto-title">처음 쓰는 사람도 30초 사용법</div>
+        <ul class="hero-howto-list">
+          <li><b>1)</b> 얼마나 오래 모을지 고르세요. (예: 15년)</li>
+          <li><b>2)</b> 처음 돈 + 매달 넣을 돈을 정하세요.</li>
+          <li><b>3)</b> ETF 비중을 나눠요. (합계는 100%)</li>
+          <li><b>4)</b> 약세/기본/강세를 눌러 결과를 비교하세요.</li>
+        </ul>
+      </div>
     </div>
   </div>
 
   <!-- LAYOUT -->
   <div class="layout">
+
+    <!-- ===== RIGHT PANEL ===== -->
+    <div class="col-right">
+
+      <div class="result-chart-row">
+      <!-- MAIN RESULT -->
+      <div class="card summary-card" style="display:flex; flex-direction:column; justify-content:center;">
+        <div class="section-head">
+          <div class="section-title">투자 결과 요약</div>
+          <div class="result-context" id="result-period-badge">최초투자 500만원, 매월 80만원, 15년간 투자시<br> 추정 수익입니다.</div>
+        </div>
+        <div class="data-status">
+          <div id="data-mode-badge" class="data-mode-badge mode-assumption">애널리스트 가정모드</div>
+          <div id="data-updated-at" class="data-updated-at">데이터 기준시각: 로딩 전</div>
+        </div>
+
+        <div class="result-main glow-blue">
+          <div class="result-main-label">최종 예상 자산 (세후 추정)</div>
+          <div class="result-main-value" id="result-final">—</div>
+          <div class="result-main-sub" id="result-sub">계산 중...</div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-card accent-blue">
+            <div class="result-label">총 투자 원금</div>
+            <div class="result-value" id="r-invested" style="color:var(--text)">—</div>
+            <div class="result-sub">초기금 + 월납입 합계</div>
+          </div>
+          <div class="result-card accent-green">
+            <div class="result-label">총 수익금</div>
+            <div class="result-value" id="r-profit" style="color:var(--green)">—</div>
+            <div class="result-sub" id="r-profit-pct">수익률 계산 중</div>
+          </div>
+          <div class="result-card accent-orange">
+            <div class="result-label">포트폴리오 연수익률</div>
+            <div class="result-value" id="r-annual" style="color:var(--orange)">—</div>
+            <div class="result-sub">가중평균 적용</div>
+          </div>
+          <div class="result-card accent-purple">
+            <div class="result-label">자산 증식 배수</div>
+            <div class="result-value" id="r-multiple" style="color:var(--purple)">—</div>
+            <div class="result-sub">원금 대비 배율</div>
+          </div>
+        </div>
+        <details class="calc-note">
+          <summary>계산 방식 보기 (쉬운 설명)</summary>
+          <div class="calc-note-content">
+            매달 같은 돈을 넣고(DCA), 연수익률을 월수익률로 바꿔 복리로 계산합니다.<br>
+            사용식: 최종금액 = 초기금 × (1+r)^n + 월납입금 × ((1+r)^n - 1) / r<br>
+            여기서 r은 (연수익률 - 비용)/12, n은 전체 개월 수입니다.
+          </div>
+        </details>
+      </div>
+
+      <!-- GROWTH CHART -->
+      <div class="card growth-card" style="display:flex; flex-direction:column;">
+        <div class="section-head">
+          <div class="section-title">자산 성장 시뮬레이션</div>
+          <div class="chart-legend-custom">
+            <div class="legend-item"><div class="legend-line" style="background:linear-gradient(90deg,var(--blue),var(--green))"></div> 포트폴리오</div>
+            <div class="legend-item"><div class="legend-line" style="background:var(--border2)"></div> 원금 누적</div>
+          </div>
+        </div>
+        <div class="chart-wrap" style="flex:1; display:flex; align-items:center;">
+          <canvas id="chart-growth" height="280"></canvas>
+        </div>
+      </div>
+      </div> <!-- /.result-chart-row -->
+
+      <!-- MILESTONE -->
+      <div class="card" id="milestone-card">
+        <div class="section-head">
+          <div class="section-title">연도별 자산 마일스톤: 누적 성장</div>
+        </div>
+        <div class="milestone-row" id="milestone-row"></div>
+      </div>
+
+      <!-- ETF BREAKDOWN -->
+      <div class="card" id="etf-analysis-card">
+        <div class="section-head">
+          <div class="section-title">ETF별 포트폴리오 분석</div>
+        </div>
+        <div class="etf-grid">
+
+          <!-- KODEX -->
+          <a href="https://finance.naver.com/item/main.naver?code=091160" target="_blank" class="etf-card-link">
+          <div class="etf-card c1">
+            <div class="etf-header">
+              <div>
+                <div class="etf-title" style="color:var(--c1)">KODEX 반도체</div>
+                <div class="etf-code" style="color:var(--c1);opacity:0.85;font-weight:600;">091160 · KRX 반도체</div>
+              </div>
+            </div>
+            <div style="display:inline-block;background:rgba(79,143,255,0.12);color:var(--c1);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-bottom:12px;">
+              ① 안정 코어
+            </div>
+            <div class="etf-stats">
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c1)" id="etf0-weight">40%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">비중</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c1)" id="etf0-ret">12%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">연수익률</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--text-muted)">30종+</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">구성종목</div>
+              </div>
+            </div>
+            <div class="etf-desc" style="color:var(--c1);opacity:0.8;font-weight:500;">종목 30개 이상 분산으로 변동성 낮음. 포트폴리오 중심축 역할.</div>
+            <div class="etf-weight-bar" id="etf0-bar" style="background:var(--c1);width:40%"></div>
+          </div>
+          </a>
+
+          <!-- TIGER -->
+          <a href="https://finance.naver.com/item/main.naver?code=395160" target="_blank" class="etf-card-link">
+          <div class="etf-card c2">
+            <div class="etf-header">
+              <div>
+                <div class="etf-title" style="color:var(--c2)">TIGER 반도체TOP10</div>
+                <div class="etf-code" style="color:var(--c2);opacity:0.85;font-weight:600;">395160 · 삼성·하이닉스 집중</div>
+              </div>
+            </div>
+            <div style="display:inline-block;background:rgba(0,214,143,0.1);color:var(--c2);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-bottom:12px;">
+              ② 성장 가속
+            </div>
+            <div class="etf-stats">
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c2)" id="etf1-weight">40%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">비중</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c2)" id="etf1-ret">22%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">연수익률</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--text-muted)">상위10</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">집중도</div>
+              </div>
+            </div>
+            <div class="etf-desc" style="color:var(--c2);opacity:0.8;font-weight:500;">상위 10개 집중 포트폴리오. 수익률 상위권 (26~40%). 변동성 큼.</div>
+            <div class="etf-weight-bar" id="etf1-bar" style="background:var(--c2);width:40%"></div>
+          </div>
+          </a>
+
+          <!-- SOL -->
+          <a href="https://finance.naver.com/item/main.naver?code=396500" target="_blank" class="etf-card-link">
+          <div class="etf-card c3">
+            <div class="etf-header">
+              <div>
+                <div class="etf-title" style="color:var(--c3)">SOL 반도체후공정</div>
+                <div class="etf-code" style="color:var(--c3);opacity:0.85;font-weight:600;">396500 · AI·HBM 직접 수혜</div>
+              </div>
+            </div>
+            <div style="display:inline-block;background:rgba(181,123,255,0.1);color:var(--c3);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-bottom:12px;">
+              ③ 알파 수익
+            </div>
+            <div class="etf-stats">
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c3)" id="etf2-weight">20%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">비중</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c3)" id="etf2-ret">18%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">연수익률</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--text-muted)">HBM</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">핵심</div>
+              </div>
+            </div>
+            <div class="etf-desc" style="color:var(--c3);opacity:0.8;font-weight:500;">후공정·소부장 집중. AI 인프라 확장 직접 수혜. 급등 구간 포착.</div>
+            <div class="etf-weight-bar" id="etf2-bar" style="background:var(--c3);width:20%"></div>
+          </div>
+          </a>
+        </div>
+
+        <!-- Breakdown Table -->
+        <div style="overflow-x:auto;">
+        <table class="breakdown-table">
+          <thead>
+            <tr>
+              <th>ETF</th>
+              <th>비중</th>
+              <th>연수익률</th>
+              <th>기여 수익률</th>
+              <th id="th-final">최종 예상 기여액</th>
+            </tr>
+          </thead>
+          <tbody id="breakdown-body"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2" style="padding:13px 14px;font-weight:700;font-size:13px;">포트폴리오 합계</td>
+              <td style="padding:13px 14px;font-weight:800;color:var(--green)" id="portfolio-annual-ret">—</td>
+              <td style="padding:13px 14px;font-weight:800;color:var(--blue)" id="portfolio-contrib">100%</td>
+              <td style="padding:13px 14px;font-weight:800;font-size:15px;color:var(--blue)" id="portfolio-total">—</td>
+            </tr>
+          </tfoot>
+        </table>
+        </div>
+
+        <div class="analysis-foot-grid">
+          <div class="analysis-foot-card">
+            <div class="analysis-foot-title">기본 시나리오</div>
+            <div class="analysis-foot-text" id="scenario-desc">
+              <strong style="color:var(--blue)">기본 시나리오</strong>: 애널리스트 컨센서스 장기 전망 적용.<br>
+              HBM 시장 CAGR 18.3%(Roots Analysis), TSMC 2026 +30%(Goldman) 등을 반영합니다.
+            </div>
+          </div>
+          <div class="analysis-foot-card">
+            <div class="analysis-foot-title">근거 출처 (검증용 링크)</div>
+            <ul class="analysis-source-list">
+              <li>HBM 시장 장기 성장률: Roots Analysis (CAGR 18.33%) · <a href="https://www.rootsanalysis.com/high-bandwidth-memory-market" target="_blank" rel="noopener">원문 보기</a></li>
+              <li>반도체 ETF 장기 흐름 참고: SOXX/SMH 장기 데이터 · <a href="https://www.ishares.com/us/products/239705/ishares-semiconductor-etf" target="_blank" rel="noopener">SOXX</a> · <a href="https://www.vaneck.com/us/en/investments/semiconductor-etf-smh/overview/" target="_blank" rel="noopener">SMH</a></li>
+              <li>TSMC +30% 전망 참고: Goldman 2026 outlook 관련 언급 · <a href="https://www.goldmansachs.com/insights/goldman-sachs-research/markets-outlook-2026-some-like-it-hot" target="_blank" rel="noopener">리서치 페이지</a></li>
+            </ul>
+            <div class="analysis-source-note">※ 일부 리서치는 유료/기관 전용이며, 본 서비스는 공개 확인 가능한 범위의 수치만 요약 반영합니다.</div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div><!-- /col-right -->
 
     <!-- ===== LEFT PANEL ===== -->
     <div class="col-left">
@@ -691,21 +1021,6 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
           <button class="scenario-btn base active" onclick="setScenario('base')">기본</button>
           <button class="scenario-btn bull" onclick="setScenario('bull')">강세</button>
         </div>
-        <div style="margin-top:14px;background:var(--surface2);border-radius:10px;padding:14px;">
-          <div id="scenario-desc" style="font-size:12px;color:var(--text-sub);line-height:1.6;">
-            <strong style="color:var(--blue)">기본 시나리오</strong>: 애널리스트 컨센서스 장기 전망 적용.<br>
-            HBM 시장 CAGR 18.3%(Roots Analysis), TSMC 2026 +30%(Goldman) 등을 반영합니다.
-          </div>
-        </div>
-        <div class="source-box">
-          <div class="source-title">근거 출처 (검증용 링크)</div>
-          <ul class="source-list">
-            <li>HBM 시장 장기 성장률: Roots Analysis (CAGR 18.33%) · <a href="https://www.rootsanalysis.com/high-bandwidth-memory-market" target="_blank" rel="noopener">원문 보기</a></li>
-            <li>반도체 ETF 장기 흐름 참고: SOXX/SMH 장기 데이터 · <a href="https://www.ishares.com/us/products/239705/ishares-semiconductor-etf" target="_blank" rel="noopener">SOXX</a> · <a href="https://www.vaneck.com/us/en/investments/semiconductor-etf-smh/overview/" target="_blank" rel="noopener">SMH</a></li>
-            <li>TSMC +30% 전망 참고: Goldman 2026 outlook 관련 언급 · <a href="https://www.goldmansachs.com/insights/goldman-sachs-research/markets-outlook-2026-some-like-it-hot" target="_blank" rel="noopener">리서치 페이지</a></li>
-          </ul>
-          <div class="source-meta">※ 일부 리서치는 유료/기관 전용이며, 본 서비스는 공개 확인 가능한 범위의 수치만 요약 반영합니다.</div>
-        </div>
 
         <!-- Per-ETF return sliders -->
         <div style="margin-top:16px;">
@@ -753,216 +1068,6 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
       </div>
 
     </div><!-- /col-left -->
-
-    <!-- ===== RIGHT PANEL ===== -->
-    <div class="col-right">
-
-      <div class="result-chart-row">
-      <!-- MAIN RESULT -->
-      <div class="card" style="display:flex; flex-direction:column; justify-content:center;">
-        <div class="section-head">
-          <div class="section-title">📈 투자 결과 요약</div>
-          <div class="section-badge" id="result-period-badge" style="font-size:14px;font-weight:800;color:#4f8fff;border-color:#4f8fff55;background:rgba(79,143,255,0.10);padding:5px 16px;">15년 후</div>
-        </div>
-        <div class="data-status">
-          <div id="data-mode-badge" class="data-mode-badge mode-assumption">애널리스트 가정모드</div>
-          <div id="data-updated-at" class="data-updated-at">데이터 기준시각: 로딩 전</div>
-        </div>
-
-        <div class="result-main glow-blue">
-          <div class="result-main-label">최종 예상 자산 (세후 추정)</div>
-          <div class="result-main-value" id="result-final">—</div>
-          <div class="result-main-sub" id="result-sub">계산 중...</div>
-        </div>
-
-        <div class="result-grid">
-          <div class="result-card accent-blue">
-            <div class="result-label">총 투자 원금</div>
-            <div class="result-value" id="r-invested" style="color:var(--text)">—</div>
-            <div class="result-sub">초기금 + 월납입 합계</div>
-          </div>
-          <div class="result-card accent-green">
-            <div class="result-label">총 수익금</div>
-            <div class="result-value" id="r-profit" style="color:var(--green)">—</div>
-            <div class="result-sub" id="r-profit-pct">수익률 계산 중</div>
-          </div>
-          <div class="result-card accent-orange">
-            <div class="result-label">포트폴리오 연수익률</div>
-            <div class="result-value" id="r-annual" style="color:var(--orange)">—</div>
-            <div class="result-sub">가중평균 적용</div>
-          </div>
-          <div class="result-card accent-purple">
-            <div class="result-label">자산 증식 배수</div>
-            <div class="result-value" id="r-multiple" style="color:var(--purple)">—</div>
-            <div class="result-sub">원금 대비 배율</div>
-          </div>
-        </div>
-        <details class="calc-note">
-          <summary>계산 방식 보기 (쉬운 설명)</summary>
-          <div class="calc-note-content">
-            매달 같은 돈을 넣고(DCA), 연수익률을 월수익률로 바꿔 복리로 계산합니다.<br>
-            사용식: 최종금액 = 초기금 × (1+r)^n + 월납입금 × ((1+r)^n - 1) / r<br>
-            여기서 r은 (연수익률 - 비용)/12, n은 전체 개월 수입니다.
-          </div>
-        </details>
-      </div>
-
-      <!-- GROWTH CHART -->
-      <div class="card" style="display:flex; flex-direction:column;">
-        <div class="section-head">
-          <div class="section-title">📊 자산 성장 시뮬레이션</div>
-          <div class="chart-legend-custom">
-            <div class="legend-item"><div class="legend-line" style="background:linear-gradient(90deg,var(--blue),var(--green))"></div> 포트폴리오</div>
-            <div class="legend-item"><div class="legend-line" style="background:var(--border2)"></div> 원금 누적</div>
-          </div>
-        </div>
-        <div class="chart-wrap" style="flex:1; display:flex; align-items:center;">
-          <canvas id="chart-growth" height="280"></canvas>
-        </div>
-      </div>
-      </div> <!-- /.result-chart-row -->
-
-      <!-- ETF BREAKDOWN -->
-      <div class="card">
-        <div class="section-head">
-          <div class="section-title">💠 ETF별 포트폴리오 분석</div>
-        </div>
-        <div class="etf-grid">
-
-          <!-- KODEX -->
-          <a href="https://finance.naver.com/item/main.naver?code=091160" target="_blank" class="etf-card-link">
-          <div class="etf-card c1">
-            <div class="etf-header">
-              <div class="etf-icon" style="background:rgba(79,143,255,0.12)">🔷</div>
-              <div>
-                <div class="etf-title" style="color:var(--c1)">KODEX 반도체</div>
-                <div class="etf-code" style="color:var(--c1);opacity:0.85;font-weight:600;">091160 · KRX 반도체</div>
-              </div>
-            </div>
-            <div style="display:inline-block;background:rgba(79,143,255,0.12);color:var(--c1);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-bottom:12px;">
-              ① 안정 코어
-            </div>
-            <div class="etf-stats">
-              <div class="etf-stat">
-                <div class="etf-stat-v" style="color:var(--c1)" id="etf0-weight">40%</div>
-                <div class="etf-stat-k" style="color:var(--text-muted)">비중</div>
-              </div>
-              <div class="etf-stat">
-                <div class="etf-stat-v" style="color:var(--c1)" id="etf0-ret">12%</div>
-                <div class="etf-stat-k" style="color:var(--text-muted)">연수익률</div>
-              </div>
-              <div class="etf-stat">
-                <div class="etf-stat-v" style="color:var(--text-muted)">30종+</div>
-                <div class="etf-stat-k" style="color:var(--text-muted)">구성종목</div>
-              </div>
-            </div>
-            <div class="etf-desc" style="color:var(--c1);opacity:0.8;font-weight:500;">종목 30개 이상 분산으로 변동성 낮음. 포트폴리오 중심축 역할.</div>
-            <div class="etf-weight-bar" id="etf0-bar" style="background:var(--c1);width:40%"></div>
-          </div>
-          </a>
-
-          <!-- TIGER -->
-          <a href="https://finance.naver.com/item/main.naver?code=395160" target="_blank" class="etf-card-link">
-          <div class="etf-card c2">
-            <div class="etf-header">
-              <div class="etf-icon" style="background:rgba(0,214,143,0.1)">🚀</div>
-              <div>
-                <div class="etf-title" style="color:var(--c2)">TIGER 반도체TOP10</div>
-                <div class="etf-code" style="color:var(--c2);opacity:0.85;font-weight:600;">395160 · 삼성·하이닉스 집중</div>
-              </div>
-            </div>
-            <div style="display:inline-block;background:rgba(0,214,143,0.1);color:var(--c2);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-bottom:12px;">
-              ② 성장 가속
-            </div>
-            <div class="etf-stats">
-              <div class="etf-stat">
-                <div class="etf-stat-v" style="color:var(--c2)" id="etf1-weight">40%</div>
-                <div class="etf-stat-k" style="color:var(--text-muted)">비중</div>
-              </div>
-              <div class="etf-stat">
-                <div class="etf-stat-v" style="color:var(--c2)" id="etf1-ret">22%</div>
-                <div class="etf-stat-k" style="color:var(--text-muted)">연수익률</div>
-              </div>
-              <div class="etf-stat">
-                <div class="etf-stat-v" style="color:var(--text-muted)">상위10</div>
-                <div class="etf-stat-k" style="color:var(--text-muted)">집중도</div>
-              </div>
-            </div>
-            <div class="etf-desc" style="color:var(--c2);opacity:0.8;font-weight:500;">상위 10개 집중 포트폴리오. 수익률 상위권 (26~40%). 변동성 큼.</div>
-            <div class="etf-weight-bar" id="etf1-bar" style="background:var(--c2);width:40%"></div>
-          </div>
-          </a>
-
-          <!-- SOL -->
-          <a href="https://finance.naver.com/item/main.naver?code=396500" target="_blank" class="etf-card-link">
-          <div class="etf-card c3">
-            <div class="etf-header">
-              <div class="etf-icon" style="background:rgba(181,123,255,0.1)">⚡</div>
-              <div>
-                <div class="etf-title" style="color:var(--c3)">SOL 반도체후공정</div>
-                <div class="etf-code" style="color:var(--c3);opacity:0.85;font-weight:600;">396500 · AI·HBM 직접 수혜</div>
-              </div>
-            </div>
-            <div style="display:inline-block;background:rgba(181,123,255,0.1);color:var(--c3);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-bottom:12px;">
-              ③ 알파 수익
-            </div>
-            <div class="etf-stats">
-              <div class="etf-stat">
-                <div class="etf-stat-v" style="color:var(--c3)" id="etf2-weight">20%</div>
-                <div class="etf-stat-k" style="color:var(--text-muted)">비중</div>
-              </div>
-              <div class="etf-stat">
-                <div class="etf-stat-v" style="color:var(--c3)" id="etf2-ret">18%</div>
-                <div class="etf-stat-k" style="color:var(--text-muted)">연수익률</div>
-              </div>
-              <div class="etf-stat">
-                <div class="etf-stat-v" style="color:var(--text-muted)">HBM</div>
-                <div class="etf-stat-k" style="color:var(--text-muted)">핵심</div>
-              </div>
-            </div>
-            <div class="etf-desc" style="color:var(--c3);opacity:0.8;font-weight:500;">후공정·소부장 집중. AI 인프라 확장 직접 수혜. 급등 구간 포착.</div>
-            <div class="etf-weight-bar" id="etf2-bar" style="background:var(--c3);width:20%"></div>
-          </div>
-          </a>
-        </div>
-
-        <!-- Breakdown Table -->
-        <div style="overflow-x:auto;">
-        <table class="breakdown-table">
-          <thead>
-            <tr>
-              <th>ETF</th>
-              <th>비중</th>
-              <th>연수익률</th>
-              <th>기여 수익률</th>
-              <th id="th-final">최종 예상 기여액</th>
-            </tr>
-          </thead>
-          <tbody id="breakdown-body"></tbody>
-          <tfoot>
-            <tr>
-              <td colspan="2" style="padding:13px 14px;font-weight:700;font-size:13px;">포트폴리오 합계</td>
-              <td style="padding:13px 14px;font-weight:800;color:var(--green)" id="portfolio-annual-ret">—</td>
-              <td style="padding:13px 14px;font-weight:800;color:var(--blue)" id="portfolio-contrib">100%</td>
-              <td style="padding:13px 14px;font-weight:800;font-size:15px;color:var(--blue)" id="portfolio-total">—</td>
-            </tr>
-          </tfoot>
-        </table>
-        </div>
-      </div>
-
-      <!-- MILESTONE -->
-      <div class="card">
-        <div class="section-head">
-          <div class="section-title">🏁 연도별 자산 마일스톤</div>
-          <div class="section-badge">누적 성장</div>
-        </div>
-        <div class="milestone-row" id="milestone-row"></div>
-      </div>
-
-
-
-    </div><!-- /col-right -->
   </div><!-- /layout -->
 
 </main>
@@ -1007,6 +1112,7 @@ function fmt(manwon) {
   return (v / 10000).toFixed(0) + '만원';
 }
 function fmtPct(v) { return (v >= 0 ? '+' : '') + v.toFixed(1) + '%'; }
+function fmtManwon(v) { return `${Number(v).toLocaleString('ko-KR')}만원`; }
 function fmtKST(iso) {
   if (!iso) return '정보 없음';
   const d = new Date(iso);
@@ -1018,7 +1124,13 @@ function setDataStatus(mode, text) {
   const ts = document.getElementById('data-updated-at');
   badge.className = `data-mode-badge ${mode}`;
   badge.textContent = text;
-  ts.textContent = `데이터 기준시각: ${fmtKST(latestUpdatedAt)}`;
+  if (latestUpdatedAt) {
+    ts.style.display = '';
+    ts.textContent = `데이터 기준시각: ${fmtKST(latestUpdatedAt)}`;
+  } else {
+    ts.style.display = 'none';
+    ts.textContent = '';
+  }
 }
 
 // =============================================
@@ -1070,7 +1182,8 @@ function renderAll() {
   document.getElementById('result-final').textContent = fmt(final);
   document.getElementById('result-sub').textContent =
     `연수익률 ${annualRet.toFixed(1)}% · ${years}년 월 ${monthly}만원 적립`;
-  document.getElementById('result-period-badge').textContent = `${years}년 후`;
+  document.getElementById('result-period-badge').innerHTML =
+    `최초투자 ${fmtManwon(initial)}, 매월 ${fmtManwon(monthly)}, ${years}년간 투자시<br> 추정 수익입니다.`;
   document.getElementById('r-invested').textContent = fmt(totalInvested);
   document.getElementById('r-profit').textContent = fmt(profit);
   document.getElementById('r-profit-pct').textContent = `수익률 ${fmtPct(profitPct)}`;
@@ -1318,8 +1431,11 @@ function setScenario(sc) {
     document.getElementById(`rfill-${i}`).style.width = `calc(${pct}% + ${11 - pct * 0.22}px)`;
   });
 
-  document.getElementById('scenario-desc').innerHTML =
-    `<strong style="color:${sc==='bear'?'var(--red)':sc==='base'?'var(--blue)':'var(--green)'}">${sc==='bear'?'약세':'base'===sc?'기본':'강세'} 시나리오</strong>: ${SCENARIO_LABELS[sc]}`;
+  const scenarioDesc = document.getElementById('scenario-desc');
+  if (scenarioDesc) {
+    scenarioDesc.innerHTML =
+      `<strong style="color:${sc==='bear'?'var(--red)':sc==='base'?'var(--blue)':'var(--green)'}">${sc==='bear'?'약세':'base'===sc?'기본':'강세'} 시나리오</strong>: ${SCENARIO_LABELS[sc]}`;
+  }
 
   renderAll();
 }
@@ -1328,6 +1444,13 @@ function setScenario(sc) {
 // INIT
 // =============================================
 document.addEventListener('DOMContentLoaded', () => {
+  const rightPanel = document.querySelector('.col-right');
+  const leftPanel = document.querySelector('.col-left');
+  const etfAnalysisCard = document.getElementById('etf-analysis-card');
+  if (rightPanel && leftPanel && etfAnalysisCard && leftPanel.parentElement !== rightPanel) {
+    rightPanel.insertBefore(leftPanel, etfAnalysisCard);
+  }
+
   ['years','initial','monthly','fee'].forEach(k => onSlider(k, document.getElementById(`sl-${k}`).value));
   for(let i=0; i<3; i++) {
     onWeight(i, S.weights[i]);
@@ -1335,6 +1458,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   renderAll();
   setDataStatus('mode-assumption', '애널리스트 가정모드');
+  syncRealtimeReturns();
 });
 
 async function syncRealtimeReturns() {
