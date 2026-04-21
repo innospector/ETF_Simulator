@@ -2,5 +2,9 @@
   "version": 2,
   "functions": {
     "api/etf.js": { "runtime": "nodejs20.x" }
-  }
+  },
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/etf.js" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
 }
