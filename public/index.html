@@ -114,6 +114,29 @@ body {
 }
 .hero h1 span { background: linear-gradient(90deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .hero-desc { font-size: 14px; color: var(--text-sub); line-height: 1.7; max-width: 580px; }
+.hero-howto {
+  margin-top: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  max-width: 700px;
+}
+.hero-howto-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--blue);
+  margin-bottom: 8px;
+}
+.hero-howto-list {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.5;
+}
+.hero-howto-list li b { color: var(--text); }
 .hero-chips { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
 .hero-chip {
   background: var(--surface2); border: 1px solid var(--border);
@@ -222,6 +245,48 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
 }
 .scenario-btn.bull.active { background: var(--green); border-color: var(--green); box-shadow: 0 0 16px var(--green-glow); }
 .scenario-btn.bear.active { background: var(--red); border-color: var(--red); }
+.source-box {
+  margin-top: 12px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+}
+.source-title {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+.source-list {
+  list-style: none;
+  display: grid;
+  gap: 7px;
+}
+.source-list li {
+  font-size: 11px;
+  color: var(--text-sub);
+  line-height: 1.45;
+}
+.source-list a {
+  color: var(--blue);
+  text-decoration: none;
+}
+.source-list a:hover { text-decoration: underline; }
+.source-meta {
+  margin-top: 8px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+.return-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 2px 7px;
+  margin-left: 6px;
+}
 
 /* ─── RESULT CARDS ─── */
 .result-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
@@ -356,6 +421,49 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
   color: var(--text-muted); padding: 4px 12px; border-radius: 20px;
   font-size: 11px; font-weight: 600;
 }
+.data-status {
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.data-mode-badge {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+  color: var(--text-sub);
+}
+.mode-assumption { color: var(--text-sub); border-color: var(--border2); }
+.mode-live { color: var(--green); border-color: rgba(0,214,143,0.45); }
+.mode-fallback { color: var(--orange); border-color: rgba(255,140,66,0.45); }
+.data-updated-at {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.calc-note {
+  margin-top: 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface2);
+}
+.calc-note summary {
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-sub);
+}
+.calc-note-content {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
 
 /* ─── GLOW EFFECTS ─── */
 .glow-blue { box-shadow: 0 0 24px var(--blue-glow); }
@@ -416,6 +524,15 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
     <h1>반도체 ETF 3종으로<br><span>15년 자산을 설계하다</span></h1>
     <div class="hero-desc" style="font-weight: 600; font-size: 15px; margin-top: 10px;">
       KODEX 반도체(안정코어) · TIGER 반도체TOP10(성장엔진) · SOL 반도체후공정(알파)
+    </div>
+    <div class="hero-howto">
+      <div class="hero-howto-title">처음 쓰는 사람도 30초 사용법</div>
+      <ul class="hero-howto-list">
+        <li><b>1)</b> 얼마나 오래 모을지 고르세요. (예: 15년)</li>
+        <li><b>2)</b> 처음 돈 + 매달 넣을 돈을 정하세요.</li>
+        <li><b>3)</b> ETF 비중을 나눠요. (합계는 100%)</li>
+        <li><b>4)</b> 약세/기본/강세를 눌러 결과를 비교하세요.</li>
+      </ul>
     </div>
   </div>
 
@@ -580,6 +697,15 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
             HBM 시장 CAGR 18.3%(Roots Analysis), TSMC 2026 +30%(Goldman) 등을 반영합니다.
           </div>
         </div>
+        <div class="source-box">
+          <div class="source-title">근거 출처 (검증용 링크)</div>
+          <ul class="source-list">
+            <li>HBM 시장 장기 성장률: Roots Analysis (CAGR 18.33%) · <a href="https://www.rootsanalysis.com/high-bandwidth-memory-market" target="_blank" rel="noopener">원문 보기</a></li>
+            <li>반도체 ETF 장기 흐름 참고: SOXX/SMH 장기 데이터 · <a href="https://www.ishares.com/us/products/239705/ishares-semiconductor-etf" target="_blank" rel="noopener">SOXX</a> · <a href="https://www.vaneck.com/us/en/investments/semiconductor-etf-smh/overview/" target="_blank" rel="noopener">SMH</a></li>
+            <li>TSMC +30% 전망 참고: Goldman 2026 outlook 관련 언급 · <a href="https://www.goldmansachs.com/insights/goldman-sachs-research/markets-outlook-2026-some-like-it-hot" target="_blank" rel="noopener">리서치 페이지</a></li>
+          </ul>
+          <div class="source-meta">※ 일부 리서치는 유료/기관 전용이며, 본 서비스는 공개 확인 가능한 범위의 수치만 요약 반영합니다.</div>
+        </div>
 
         <!-- Per-ETF return sliders -->
         <div style="margin-top:16px;">
@@ -588,7 +714,7 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
           <div class="slider-block" style="margin-bottom:16px;">
             <div class="slider-label">
               <span class="slider-name" style="color:var(--c1)">KODEX 반도체</span>
-              <span class="slider-value" id="rval-0" style="color:var(--c1);font-size:15px;">12%</span>
+              <span class="slider-value" id="rval-0" style="color:var(--c1);font-size:15px;">12% <span class="return-badge">가정값</span></span>
             </div>
             <div class="slider-track">
               <div class="slider-fill" id="rfill-0" style="background:var(--c1);width:58.2%"></div>
@@ -601,7 +727,7 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
           <div class="slider-block" style="margin-bottom:16px;">
             <div class="slider-label">
               <span class="slider-name" style="color:var(--c2)">TIGER TOP10</span>
-              <span class="slider-value" id="rval-1" style="color:var(--c2);font-size:15px;">18%</span>
+              <span class="slider-value" id="rval-1" style="color:var(--c2);font-size:15px;">18% <span class="return-badge">가정값</span></span>
             </div>
             <div class="slider-track">
               <div class="slider-fill" id="rfill-1" style="background:var(--c2);width:69.1%"></div>
@@ -614,7 +740,7 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
           <div class="slider-block" style="margin-bottom:0;">
             <div class="slider-label">
               <span class="slider-name" style="color:var(--c3)">SOL 후공정</span>
-              <span class="slider-value" id="rval-2" style="color:var(--c3);font-size:15px;">22%</span>
+              <span class="slider-value" id="rval-2" style="color:var(--c3);font-size:15px;">22% <span class="return-badge">가정값</span></span>
             </div>
             <div class="slider-track">
               <div class="slider-fill" id="rfill-2" style="background:var(--c3);width:76.4%"></div>
@@ -637,6 +763,10 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
         <div class="section-head">
           <div class="section-title">📈 투자 결과 요약</div>
           <div class="section-badge" id="result-period-badge" style="font-size:14px;font-weight:800;color:#4f8fff;border-color:#4f8fff55;background:rgba(79,143,255,0.10);padding:5px 16px;">15년 후</div>
+        </div>
+        <div class="data-status">
+          <div id="data-mode-badge" class="data-mode-badge mode-assumption">애널리스트 가정모드</div>
+          <div id="data-updated-at" class="data-updated-at">데이터 기준시각: 로딩 전</div>
         </div>
 
         <div class="result-main glow-blue">
@@ -667,6 +797,14 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
             <div class="result-sub">원금 대비 배율</div>
           </div>
         </div>
+        <details class="calc-note">
+          <summary>계산 방식 보기 (쉬운 설명)</summary>
+          <div class="calc-note-content">
+            매달 같은 돈을 넣고(DCA), 연수익률을 월수익률로 바꿔 복리로 계산합니다.<br>
+            사용식: 최종금액 = 초기금 × (1+r)^n + 월납입금 × ((1+r)^n - 1) / r<br>
+            여기서 r은 (연수익률 - 비용)/12, n은 전체 개월 수입니다.
+          </div>
+        </details>
       </div>
 
       <!-- GROWTH CHART -->
@@ -831,7 +969,7 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
 
 <footer class="footer">
   ⚠️ 본 시뮬레이터는 과거 수익률 및 가정 수익률 기반 추정이며, 미래 실제 수익을 보장하지 않습니다.<br>
-  ETF 투자는 원금 손실 위험이 있으며, 수익률은 운용보수·세금·환율 변동 미반영 기준입니다.<br>
+  ETF 투자는 원금 손실 위험이 있으며, 시뮬레이터는 세금·비용 슬라이더 값만 반영한 단순 추정치입니다.<br>
   투자 결정 전 투자설명서를 반드시 확인하고 본인의 투자 성향에 맞는 결정을 내리세요.
 </footer>
 
@@ -857,6 +995,7 @@ const SCENARIO_LABELS = {
 };
 
 let growthChart = null;
+let latestUpdatedAt = null;
 
 // =============================================
 // FORMAT
@@ -868,6 +1007,19 @@ function fmt(manwon) {
   return (v / 10000).toFixed(0) + '만원';
 }
 function fmtPct(v) { return (v >= 0 ? '+' : '') + v.toFixed(1) + '%'; }
+function fmtKST(iso) {
+  if (!iso) return '정보 없음';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '정보 없음';
+  return d.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul', hour12: false });
+}
+function setDataStatus(mode, text) {
+  const badge = document.getElementById('data-mode-badge');
+  const ts = document.getElementById('data-updated-at');
+  badge.className = `data-mode-badge ${mode}`;
+  badge.textContent = text;
+  ts.textContent = `데이터 기준시각: ${fmtKST(latestUpdatedAt)}`;
+}
 
 // =============================================
 // DCA SIMULATION
@@ -1138,7 +1290,7 @@ function onReturn(idx, val) {
   val = parseInt(val);
   S.returns[idx] = val;
   const pct = (val - (-20)) / 55 * 100;
-  document.getElementById(`rval-${idx}`).textContent = fmtPct(val);
+  document.getElementById(`rval-${idx}`).innerHTML = `${fmtPct(val)} <span class="return-badge">가정값</span>`;
   document.getElementById(`rfill-${idx}`).style.width = `calc(${pct}% + ${11 - pct * 0.22}px)`;
   renderAll();
 }
@@ -1162,7 +1314,7 @@ function setScenario(sc) {
     S.returns[i] = v;
     document.getElementById(`rsl-${i}`).value = v;
     const pct = (v - (-20)) / 55 * 100;
-    document.getElementById(`rval-${i}`).textContent = fmtPct(v);
+    document.getElementById(`rval-${i}`).innerHTML = `${fmtPct(v)} <span class="return-badge">가정값</span>`;
     document.getElementById(`rfill-${i}`).style.width = `calc(${pct}% + ${11 - pct * 0.22}px)`;
   });
 
@@ -1182,10 +1334,13 @@ document.addEventListener('DOMContentLoaded', () => {
     onReturn(i, S.returns[i]);
   }
   renderAll();
+  setDataStatus('mode-assumption', '애널리스트 가정모드');
+  syncRealtimeReturns();
 });
 
 async function syncRealtimeReturns() {
   const codes = ['091160', '395160', '396500'];
+  let successCount = 0;
 
   for (let i = 0; i < codes.length; i++) {
     try {
@@ -1198,15 +1353,24 @@ async function syncRealtimeReturns() {
       S.returns[i] = retInt;
       SCENARIO_BASE[i] = retInt;
       document.getElementById(`rsl-${i}`).value = retInt;
-      document.getElementById(`rval-${i}`).textContent = fmtPct(retInt);
+      document.getElementById(`rval-${i}`).innerHTML = `${fmtPct(retInt)} <span class="return-badge">실시간</span>`;
       const pct = (retInt - (-20)) / 55 * 100;
       document.getElementById(`rfill-${i}`).style.width = `calc(${pct}% + ${11 - pct * 0.22}px)`;
+      latestUpdatedAt = data.updatedAt || latestUpdatedAt;
+      successCount++;
     } catch (e) {
       // API 실패 시 기본값 유지
       console.warn(`ETF ${codes[i]} 실시간 조회 실패:`, e.message);
     }
   }
 
+  if (successCount === codes.length) {
+    setDataStatus('mode-live', `실시간 연동모드 (${successCount}/${codes.length})`);
+  } else if (successCount > 0) {
+    setDataStatus('mode-fallback', `부분 연동 (${successCount}/${codes.length})`);
+  } else {
+    setDataStatus('mode-assumption', '실시간 실패 → 가정모드');
+  }
   renderAll();
 }
 </script>
