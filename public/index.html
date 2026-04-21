@@ -592,10 +592,10 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
             </div>
             <div class="slider-track">
               <div class="slider-fill" id="rfill-0" style="background:var(--c1);width:26.7%"></div>
-              <input type="range" id="rsl-0" min="-20" max="60" value="12" step="1"
+              <input type="range" id="rsl-0" min="-20" max="30" value="12" step="1"
                 oninput="onReturn(0, this.value)">
             </div>
-            <div class="slider-range"><span>-20%</span><span>+60%</span></div>
+            <div class="slider-range"><span>-20%</span><span>+30%</span></div>
           </div>
 
           <div class="slider-block" style="margin-bottom:16px;">
@@ -605,10 +605,10 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
             </div>
             <div class="slider-track">
               <div class="slider-fill" id="rfill-1" style="background:var(--c2);width:52.5%"></div>
-              <input type="range" id="rsl-1" min="-20" max="60" value="22" step="1"
+              <input type="range" id="rsl-1" min="-20" max="30" value="22" step="1"
                 oninput="onReturn(1, this.value)">
             </div>
-            <div class="slider-range"><span>-20%</span><span>+60%</span></div>
+            <div class="slider-range"><span>-20%</span><span>+30%</span></div>
           </div>
 
           <div class="slider-block" style="margin-bottom:0;">
@@ -618,10 +618,10 @@ input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
             </div>
             <div class="slider-track">
               <div class="slider-fill" id="rfill-2" style="background:var(--c3);width:47.5%"></div>
-              <input type="range" id="rsl-2" min="-20" max="60" value="18" step="1"
+              <input type="range" id="rsl-2" min="-20" max="30" value="18" step="1"
                 oninput="onReturn(2, this.value)">
             </div>
-            <div class="slider-range"><span>-20%</span><span>+60%</span></div>
+            <div class="slider-range"><span>-20%</span><span>+30%</span></div>
           </div>
         </div>
       </div>
@@ -1137,7 +1137,7 @@ function onWeight(idx, val) {
 function onReturn(idx, val) {
   val = parseInt(val);
   S.returns[idx] = val;
-  const pct = (val - (-20)) / 80 * 100;
+  const pct = (val - (-20)) / 50 * 100;
   document.getElementById(`rval-${idx}`).textContent = fmtPct(val);
   document.getElementById(`rfill-${idx}`).style.width = `calc(${pct}% + ${11 - pct * 0.22}px)`;
   renderAll();
@@ -1161,7 +1161,7 @@ function setScenario(sc) {
   presets[sc].forEach((v, i) => {
     S.returns[i] = v;
     document.getElementById(`rsl-${i}`).value = v;
-    const pct = (v - (-20)) / 80 * 100;
+    const pct = (v - (-20)) / 50 * 100;
     document.getElementById(`rval-${i}`).textContent = fmtPct(v);
     document.getElementById(`rfill-${i}`).style.width = `calc(${pct}% + ${11 - pct * 0.22}px)`;
   });
@@ -1195,12 +1195,12 @@ async function syncRealtimeReturns() {
       const data = await res.json();
       if (data.error) throw new Error(data.error);
 
-      const retInt = Math.round(Math.max(-20, Math.min(60, data.annualReturn)));
+      const retInt = Math.round(Math.max(-20, Math.min(30, data.annualReturn)));
       S.returns[i] = retInt;
       SCENARIO_BASE[i] = retInt;
       document.getElementById(`rsl-${i}`).value = retInt;
       document.getElementById(`rval-${i}`).textContent = fmtPct(retInt);
-      const pct = (retInt - (-20)) / 80 * 100;
+      const pct = (retInt - (-20)) / 50 * 100;
       document.getElementById(`rfill-${i}`).style.width = `calc(${pct}% + ${11 - pct * 0.22}px)`;
     } catch (e) {
       // API 실패 시 기본값 유지
