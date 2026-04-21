@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>토스로 ETF 투자 시작하기 — 완전 초보 가이드</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --surface2: #f0f2f7;
+    --border: #e8eaef;
+    --text: #1a1d27;
+    --text-sub: #6b7280;
+    --text-muted: #9ca3af;
+    --toss-blue: #0064ff;
+    --toss-blue-light: #e8f0ff;
+    --toss-dark: #1a1d27;
+    --green: #00c471;
+    --green-light: #e6faf3;
+    --orange: #ff7b00;
+    --orange-light: #fff3e8;
+    --red: #ff4444;
+    --radius: 20px;
+    --radius-sm: 12px;
+    --shadow: 0 2px 16px rgba(0,0,0,0.07);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--toss-blue);
+    padding: 0 32px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner {
+    max-width: 960px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .header-logo { display: flex; align-items: center; gap: 10px; color: white; }
+  .header-logo-icon {
+    width: 34px; height: 34px; background: white;
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .header-logo-text { font-size: 16px; font-weight: 700; }
+  .header-nav { display: flex; gap: 8px; }
+  .nav-btn {
+    padding: 6px 16px; border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    color: white; font-size: 13px; font-weight: 600;
+    border: none; cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .nav-btn:hover { background: rgba(255,255,255,0.25); }
+
+  /* MAIN */
+  .main { max-width: 960px; margin: 0 auto; padding: 40px 24px; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, #0040cc 0%, #0064ff 60%, #2d86ff 100%);
+    border-radius: var(--radius);
+    padding: 52px 48px;
+    color: white;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    top: -80px; right: -80px;
+    width: 320px; height: 320px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: ''; position: absolute;
+    bottom: -100px; left: -60px;
+    width: 260px; height: 260px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    padding: 5px 16px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 38px; font-weight: 900;
+    line-height: 1.25; margin-bottom: 16px;
+    letter-spacing: -1px;
+  }
+  .hero h1 span { color: #7dd3fc; }
+  .hero p { font-size: 16px; opacity: 0.85; line-height: 1.65; max-width: 540px; margin: 0 auto 28px; }
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .hero-chip {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 6px 16px; border-radius: 20px;
+    font-size: 13px; font-weight: 600;
+  }
+
+  /* NOTICE BOX */
+  .notice-box {
+    background: var(--orange-light);
+    border: 1px solid #ffe4c4;
+    border-radius: var(--radius-sm);
+    padding: 18px 22px;
+    display: flex; gap: 14px; align-items: flex-start;
+    margin-bottom: 36px;
+  }
+  .notice-icon { font-size: 22px; flex-shrink: 0; }
+  .notice-text { font-size: 14px; line-height: 1.65; color: #92400e; }
+  .notice-text strong { color: #b45309; }
+
+  /* SECTION */
+  .section { margin-bottom: 48px; }
+  .section-header { margin-bottom: 24px; }
+  .section-tag {
+    display: inline-block;
+    background: var(--toss-blue-light);
+    color: var(--toss-blue);
+    padding: 4px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .section-title { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
+  .section-sub { font-size: 14px; color: var(--text-sub); margin-top: 6px; line-height: 1.6; }
+
+  /* STEP CARDS */
+  .steps { display: flex; flex-direction: column; gap: 16px; }
+  .step-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .step-card:hover { box-shadow: var(--shadow-lg); }
+  .step-header {
+    padding: 24px 28px;
+    display: flex; align-items: flex-start; gap: 18px;
+    cursor: pointer;
+  }
+  .step-num {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 900;
+    flex-shrink: 0;
+  }
+  .step-info { flex: 1; }
+  .step-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; }
+  .step-desc { font-size: 13px; color: var(--text-sub); line-height: 1.5; }
+  .step-expand { font-size: 18px; color: var(--text-muted); transition: transform 0.3s; }
+  .step-expand.open { transform: rotate(180deg); }
+
+  .step-body {
+    padding: 0 28px 28px;
+    display: none;
+  }
+  .step-body.open { display: block; }
+
+  /* PHONE MOCKUP */
+  .phone-demo {
+    display: flex; gap: 24px; align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .phone-wrap {
+    flex-shrink: 0;
+    width: 200px;
+  }
+  .phone {
+    width: 200px;
+    background: #1a1d27;
+    border-radius: 36px;
+    padding: 16px 10px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.25);
+    position: relative;
+  }
+  .phone-notch {
+    width: 60px; height: 22px;
+    background: #1a1d27;
+    border-radius: 0 0 14px 14px;
+    margin: 0 auto 8px;
+    position: relative; z-index: 2;
+  }
+  .phone-screen {
+    background: var(--bg);
+    border-radius: 26px;
+    overflow: hidden;
+    min-height: 340px;
+  }
+  .screen-topbar {
+    background: white;
+    padding: 12px 16px 10px;
+    display: flex; align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .screen-back { font-size: 18px; margin-right: 10px; }
+  .screen-title { font-size: 14px; font-weight: 700; }
+  .screen-content { padding: 12px; }
+
+  /* TOSS UI ELEMENTS */
+  .toss-tab-bar {
+    display: flex; gap: 0;
+    background: white;
+    border-bottom: 1px solid var(--border);
+  }
+  .toss-tab {
+    flex: 1; padding: 10px 4px;
+    text-align: center; font-size: 11px; font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+  }
+  .toss-tab.active { color: var(--toss-blue); border-bottom-color: var(--toss-blue); }
+
+  .toss-search {
+    margin: 10px 0;
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 9px 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .toss-search-icon { font-size: 13px; }
+  .toss-search-text { font-size: 12px; color: var(--text-muted); }
+
+  .toss-etf-item {
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .toss-etf-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .toss-etf-info { flex: 1; }
+  .toss-etf-name { font-size: 11px; font-weight: 700; line-height: 1.3; }
+  .toss-etf-sub { font-size: 10px; color: var(--text-muted); margin-top: 1px; }
+  .toss-etf-price { text-align: right; }
+  .toss-etf-val { font-size: 12px; font-weight: 700; }
+  .toss-etf-chg { font-size: 10px; }
+  .up { color: #ef4444; }
+  .dn { color: #3b82f6; }
+
+  .toss-buy-btn {
+    width: 100%; padding: 12px;
+    background: var(--toss-blue);
+    color: white; border: none; border-radius: 12px;
+    font-size: 13px; font-weight: 700;
+    margin-top: 10px; cursor: pointer;
+  }
+
+  .toss-amount-input {
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 12px;
+    text-align: center;
+    margin: 8px 0;
+  }
+  .toss-amount-label { font-size: 10px; color: var(--text-muted); margin-bottom: 4px; }
+  .toss-amount-value { font-size: 22px; font-weight: 800; color: var(--toss-blue); }
+
+  .toss-confirm-card {
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+  .toss-confirm-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 5px 0;
+  }
+  .toss-confirm-label { font-size: 10px; color: var(--text-muted); }
+  .toss-confirm-value { font-size: 11px; font-weight: 600; }
+
+  /* STEP INSTRUCTION */
+  .step-instructions { flex: 1; }
+  .instruction-item {
+    display: flex; gap: 12px;
+    margin-bottom: 14px; align-items: flex-start;
+  }
+  .instruction-num {
+    width: 24px; height: 24px;
+    background: var(--toss-blue);
+    color: white; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+  }
+  .instruction-text { font-size: 14px; line-height: 1.6; }
+  .instruction-text strong { color: var(--toss-blue); }
+  .instruction-tip {
+    background: var(--toss-blue-light);
+    border-radius: 8px; padding: 10px 14px;
+    font-size: 12px; color: #1e40af; line-height: 1.6;
+    margin-top: 8px;
+  }
+  .instruction-warn {
+    background: #fef9c3; border-radius: 8px;
+    padding: 10px 14px; font-size: 12px; color: #713f12; line-height: 1.6;
+    margin-top: 8px;
+  }
+
+  /* ETF INFO CARDS */
+  .etf-info-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .etf-info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    transition: box-shadow 0.2s;
+  }
+  .etf-info-card:hover { box-shadow: var(--shadow); }
+  .etf-badge {
+    display: inline-block; padding: 3px 10px; border-radius: 6px;
+    font-size: 11px; font-weight: 700; margin-bottom: 10px;
+  }
+  .etf-card-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+  .etf-card-code { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+  .etf-card-stat { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .etf-stat-key { font-size: 11px; color: var(--text-muted); }
+  .etf-stat-val { font-size: 12px; font-weight: 600; }
+
+  /* FAQ */
+  .faq-list { display: flex; flex-direction: column; gap: 12px; }
+  .faq-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .faq-q {
+    padding: 18px 22px;
+    display: flex; align-items: center; gap: 12px;
+    cursor: pointer; font-size: 14px; font-weight: 600;
+  }
+  .faq-q-icon {
+    width: 28px; height: 28px;
+    background: var(--toss-blue);
+    color: white; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; flex-shrink: 0;
+  }
+  .faq-a {
+    display: none;
+    padding: 0 22px 18px 62px;
+    font-size: 13px; color: var(--text-sub); line-height: 1.7;
+  }
+  .faq-a.open { display: block; }
+
+  /* GLOSSARY */
+  .glossary-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .glossary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+  }
+  .glossary-term { font-size: 14px; font-weight: 700; color: var(--toss-blue); margin-bottom: 6px; }
+  .glossary-def { font-size: 13px; color: var(--text-sub); line-height: 1.6; }
+
+  /* CHECKLIST */
+  .checklist {
+    background: var(--green-light);
+    border: 1px solid #a7f3d0;
+    border-radius: var(--radius-sm);
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .checklist-title { font-size: 16px; font-weight: 700; color: #064e3b; margin-bottom: 16px; }
+  .checklist-item {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 10px; font-size: 14px; color: #065f46;
+  }
+  .check-box {
+    width: 22px; height: 22px;
+    background: var(--green);
+    border-radius: 6px; color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; flex-shrink: 0;
+  }
+
+  /* RECOMMENDATION */
+  .rec-section {
+    background: linear-gradient(135deg, #0040cc, #0064ff);
+    border-radius: var(--radius);
+    padding: 36px 40px;
+    color: white;
+    margin-bottom: 40px;
+  }
+  .rec-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; }
+  .rec-sub { font-size: 14px; opacity: 0.8; margin-bottom: 24px; }
+  .rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .rec-card {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 14px; padding: 20px;
+  }
+  .rec-type { font-size: 11px; opacity: 0.7; margin-bottom: 8px; font-weight: 600; }
+  .rec-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .rec-return { font-size: 12px; opacity: 0.8; }
+  .rec-return strong { color: #86efac; }
+
+  /* FOOTER */
+  .footer {
+    text-align: center; padding: 32px 24px;
+    color: var(--text-muted); font-size: 12px; line-height: 1.8;
+    border-top: 1px solid var(--border);
+  }
+  .footer a { color: var(--toss-blue); text-decoration: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    .etf-info-grid { grid-template-columns: 1fr; }
+    .glossary-grid { grid-template-columns: 1fr; }
+    .rec-grid { grid-template-columns: 1fr; }
+    .phone-demo { flex-direction: column; }
+    .hero h1 { font-size: 28px; }
+    .hero { padding: 36px 24px; }
+    .header-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-logo">
+      <div class="header-logo-icon">📱</div>
+      <span class="header-logo-text">토스 ETF 투자 가이드</span>
+    </div>
+    <nav class="header-nav">
+      <a href="#steps" class="nav-btn">투자 방법</a>
+      <a href="#etfs" class="nav-btn">추천 ETF</a>
+      <a href="#faq" class="nav-btn">FAQ</a>
+      <a href="1. CLAUDE_토스증권_반도체ETF_매뉴얼.html" target="_blank" class="nav-btn" style="background:rgba(255,255,255,0.22);border:1.5px solid rgba(255,255,255,0.5);font-weight:700;white-space:nowrap;">심플버전 보기</a>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">BEGINNER'S GUIDE · 토스 앱 기준</div>
+    <h1>처음 하는 ETF 투자,<br><span>토스</span>에서 5분이면 충분해요</h1>
+    <p>복잡한 증권 앱 없이도 토스 하나로 ETF를 시작할 수 있어요. 계좌 개설부터 첫 매수까지 단계별로 안내해 드릴게요.</p>
+    <div class="hero-chips">
+      <span class="hero-chip">✅ 계좌 개설 무료</span>
+      <span class="hero-chip">💸 최소 1,000원부터</span>
+      <span class="hero-chip">⚡ 5분 완성</span>
+      <span class="hero-chip">🔒 안전한 투자</span>
+    </div>
+  </div>
+
+  <!-- NOTICE -->
+  <div class="notice-box">
+    <span class="notice-icon">⚠️</span>
+    <div class="notice-text">
+      <strong>투자 위험 안내:</strong> ETF 투자는 원금 손실 위험이 있습니다. 이 가이드는 정보 제공 목적이며 투자 권유가 아닙니다.
+      투자 결정 전 반드시 상품 설명서를 확인하고, 본인의 투자 성향에 맞는 상품을 선택하세요.
+      <strong> 과거 수익률이 미래를 보장하지 않습니다.</strong>
+    </div>
+  </div>
+
+  <!-- WHAT IS ETF -->
+  <section class="section" id="whatisETF">
+    <div class="section-header">
+      <div class="section-tag">ETF란?</div>
+      <div class="section-title">ETF, 쉽게 이해하기</div>
+      <div class="section-sub">주식처럼 사고팔 수 있는 펀드예요. 여러 주식을 한 번에 담아서 리스크를 분산합니다.</div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;">
+      <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;">
+        <div style="font-size:36px;margin-bottom:12px;">🧺</div>
+        <div style="font-weight:700;margin-bottom:6px;">분산 투자</div>
+        <div style="font-size:13px;color:var(--text-sub);line-height:1.5;">삼성전자 하나 대신<br>500개 기업에 한 번에 투자</div>
+      </div>
+      <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;">
+        <div style="font-size:36px;margin-bottom:12px;">⚡</div>
+        <div style="font-weight:700;margin-bottom:6px;">주식처럼 편리</div>
+        <div style="font-size:13px;color:var(--text-sub);line-height:1.5;">장중 언제든지<br>실시간으로 사고팔기 가능</div>
+      </div>
+      <div style="background:white;border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;">
+        <div style="font-size:36px;margin-bottom:12px;">💰</div>
+        <div style="font-weight:700;margin-bottom:6px;">저렴한 비용</div>
+        <div style="font-size:13px;color:var(--text-sub);line-height:1.5;">일반 펀드 대비<br>운용보수가 훨씬 낮음</div>
+      </div>
+    </div>
+
+    <div style="background:var(--toss-blue-light);border-radius:14px;padding:20px 24px;display:flex;gap:16px;align-items:center;">
+      <div style="font-size:32px;flex-shrink:0;">💡</div>
+      <div>
+        <div style="font-size:14px;font-weight:700;color:var(--toss-blue);margin-bottom:4px;">한 줄 요약</div>
+        <div style="font-size:14px;color:#1e40af;line-height:1.6;">
+          ETF = <strong>"여러 주식을 담은 바구니"</strong>를 주식처럼 사고파는 것.<br>
+          예) KODEX 반도체 1주 사면 → 삼성전자·SK하이닉스 등 반도체 기업 전체에 동시 투자!
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEP BY STEP -->
+  <section class="section" id="steps">
+    <div class="section-header">
+      <div class="section-tag">STEP BY STEP</div>
+      <div class="section-title">토스로 ETF 매수하기</div>
+      <div class="section-sub">총 5단계예요. 처음 한 번만 설정하면 다음부턴 30초면 됩니다.</div>
+    </div>
+
+    <div class="steps">
+
+      <!-- STEP 1 -->
+      <div class="step-card">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-num" style="background:#e0e7ff;color:#4338ca;">1</div>
+          <div class="step-info">
+            <div class="step-title">토스 앱 설치 & 회원가입</div>
+            <div class="step-desc">앱스토어 / 구글플레이에서 '토스' 검색 후 설치합니다. 본인 명의 휴대폰 필요.</div>
+          </div>
+          <div class="step-expand">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="phone-demo">
+            <div class="phone-wrap">
+              <div class="phone">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <div style="background:var(--toss-blue);padding:20px 16px 24px;text-align:center;color:white;">
+                    <div style="font-size:32px;margin-bottom:8px;">💙</div>
+                    <div style="font-size:16px;font-weight:800;">토스</div>
+                    <div style="font-size:11px;opacity:0.8;margin-top:4px;">금융을 쉽고 간편하게</div>
+                  </div>
+                  <div style="padding:16px;">
+                    <div style="background:white;border-radius:12px;padding:14px;margin-bottom:10px;text-align:center;">
+                      <div style="font-size:12px;font-weight:700;color:var(--toss-blue);">📱 휴대폰 번호 입력</div>
+                      <div style="font-size:20px;font-weight:800;margin:8px 0;letter-spacing:2px;">010 - ●●●● - ●●●●</div>
+                      <div style="font-size:10px;color:var(--text-muted);">본인 명의 번호</div>
+                    </div>
+                    <button style="width:100%;padding:12px;background:var(--toss-blue);color:white;border:none;border-radius:10px;font-size:13px;font-weight:700;">인증번호 받기</button>
+                    <div style="font-size:10px;color:var(--text-muted);text-align:center;margin-top:10px;">이미 계정이 있으신가요? 로그인</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="step-instructions">
+              <div class="instruction-item">
+                <div class="instruction-num">1</div>
+                <div class="instruction-text">앱스토어(iOS) 또는 구글 플레이(Android)에서 <strong>'토스'</strong> 검색 후 설치합니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">2</div>
+                <div class="instruction-text">앱 실행 후 <strong>'시작하기'</strong> 버튼을 누릅니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">3</div>
+                <div class="instruction-text"><strong>본인 명의 휴대폰 번호</strong>를 입력하고 인증번호를 받아 인증합니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">4</div>
+                <div class="instruction-text">주민등록번호 앞 6자리 + 뒤 1자리를 입력하고 본인인증을 완료합니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">5</div>
+                <div class="instruction-text">6자리 <strong>PIN 번호</strong> 또는 생체인증(지문/얼굴)을 설정합니다.</div>
+              </div>
+              <div class="instruction-tip">💡 이미 토스 계정이 있다면 이 단계는 건너뛰세요!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-card">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-num" style="background:#dcfce7;color:#16a34a;">2</div>
+          <div class="step-info">
+            <div class="step-title">토스증권 계좌 개설하기</div>
+            <div class="step-desc">토스 앱 내에서 토스증권 계좌를 개설합니다. 비대면 개설로 영업점 방문 불필요.</div>
+          </div>
+          <div class="step-expand">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="phone-demo">
+            <div class="phone-wrap">
+              <div class="phone">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <div class="screen-topbar">
+                    <span class="screen-back">←</span>
+                    <span class="screen-title">토스증권 계좌 개설</span>
+                  </div>
+                  <div style="padding:14px;">
+                    <div style="background:white;border-radius:12px;padding:14px;margin-bottom:10px;border:2px solid var(--toss-blue);">
+                      <div style="font-size:11px;font-weight:700;color:var(--toss-blue);margin-bottom:6px;">📊 토스증권</div>
+                      <div style="font-size:12px;font-weight:700;margin-bottom:2px;">주식·ETF 투자 계좌</div>
+                      <div style="font-size:10px;color:var(--text-muted);">수수료 0.015% · 즉시 개설</div>
+                    </div>
+                    <div style="background:var(--surface2);border-radius:10px;padding:12px;margin-bottom:8px;">
+                      <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">신분증 촬영</div>
+                      <div style="font-size:11px;font-weight:600;">주민등록증 또는 운전면허증</div>
+                    </div>
+                    <div style="background:var(--surface2);border-radius:10px;padding:12px;margin-bottom:10px;">
+                      <div style="font-size:10px;color:var(--text-muted);margin-bottom:4px;">투자자 정보 입력</div>
+                      <div style="font-size:11px;font-weight:600;">투자 성향 설문 (5분)</div>
+                    </div>
+                    <button style="width:100%;padding:11px;background:var(--toss-blue);color:white;border:none;border-radius:10px;font-size:12px;font-weight:700;">무료로 계좌 개설하기</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="step-instructions">
+              <div class="instruction-item">
+                <div class="instruction-num">1</div>
+                <div class="instruction-text">토스 앱 하단 메뉴에서 <strong>'주식'</strong> 탭을 누릅니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">2</div>
+                <div class="instruction-text"><strong>'토스증권 시작하기'</strong> 또는 <strong>'계좌 개설'</strong> 버튼을 탭합니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">3</div>
+                <div class="instruction-text">신분증(주민등록증 or 운전면허증)을 <strong>카메라로 촬영</strong>합니다. 밝은 곳에서 반사 없이 촬영하세요.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">4</div>
+                <div class="instruction-text"><strong>투자 성향 설문</strong>에 솔직하게 답변합니다. (5~7분 소요)</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">5</div>
+                <div class="instruction-text">약관 동의 후 <strong>'계좌 개설 완료'</strong>를 확인합니다. 즉시 사용 가능!</div>
+              </div>
+              <div class="instruction-tip">💡 만 19세 이상 대한민국 국민이라면 누구나 무료로 개설할 수 있어요.</div>
+              <div class="instruction-warn">⚠️ 미성년자(만 19세 미만)는 부모 동의 및 법정 대리인 서류가 필요합니다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-card">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-num" style="background:#fef3c7;color:#d97706;">3</div>
+          <div class="step-info">
+            <div class="step-title">투자금 입금하기</div>
+            <div class="step-desc">토스증권 계좌에 투자할 돈을 입금합니다. 토스 머니에서 무료로 이체 가능.</div>
+          </div>
+          <div class="step-expand">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="phone-demo">
+            <div class="phone-wrap">
+              <div class="phone">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <div class="screen-topbar">
+                    <span class="screen-back">←</span>
+                    <span class="screen-title">입금하기</span>
+                  </div>
+                  <div style="padding:14px;">
+                    <div style="background:var(--toss-blue);border-radius:12px;padding:14px;margin-bottom:10px;color:white;text-align:center;">
+                      <div style="font-size:10px;opacity:0.8;margin-bottom:4px;">토스증권 계좌번호</div>
+                      <div style="font-size:13px;font-weight:700;letter-spacing:1px;">001 - 12345 - 67890</div>
+                      <div style="font-size:10px;opacity:0.7;margin-top:4px;">토스뱅크</div>
+                    </div>
+                    <div style="text-align:center;padding:16px 0;">
+                      <div style="font-size:10px;color:var(--text-muted);margin-bottom:6px;">입금할 금액</div>
+                      <div style="font-size:28px;font-weight:900;color:var(--toss-blue);">100,000원</div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;">
+                      <div style="background:var(--surface2);border-radius:8px;padding:8px;text-align:center;font-size:11px;font-weight:600;">+1만</div>
+                      <div style="background:var(--surface2);border-radius:8px;padding:8px;text-align:center;font-size:11px;font-weight:600;">+5만</div>
+                      <div style="background:var(--surface2);border-radius:8px;padding:8px;text-align:center;font-size:11px;font-weight:600;">+10만</div>
+                    </div>
+                    <button style="width:100%;padding:11px;background:var(--toss-blue);color:white;border:none;border-radius:10px;font-size:12px;font-weight:700;">입금하기</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="step-instructions">
+              <div class="instruction-item">
+                <div class="instruction-num">1</div>
+                <div class="instruction-text">토스증권 홈에서 <strong>'입금'</strong> 버튼을 누릅니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">2</div>
+                <div class="instruction-text">토스 머니에서 바로 이체하거나, <strong>토스증권 계좌번호</strong>로 다른 은행에서 이체합니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">3</div>
+                <div class="instruction-text">원하는 금액을 입력합니다. <strong>최소 1,000원</strong>부터 투자 가능해요.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">4</div>
+                <div class="instruction-text">입금 확인 후 <strong>예수금(투자 가능 금액)</strong>에 반영되면 준비 완료!</div>
+              </div>
+              <div class="instruction-tip">
+                💡 토스 앱 내 이체는 <strong>수수료 무료</strong>예요. 타행 이체 시 해당 은행 수수료가 발생할 수 있어요.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-card">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-num" style="background:#fce7f3;color:#be185d;">4</div>
+          <div class="step-info">
+            <div class="step-title">ETF 검색 & 선택하기</div>
+            <div class="step-desc">사고 싶은 ETF를 이름이나 종목코드로 검색합니다. 상세 정보를 꼭 확인하세요.</div>
+          </div>
+          <div class="step-expand">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="phone-demo">
+            <div class="phone-wrap">
+              <div class="phone">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <div class="screen-topbar">
+                    <span class="screen-back">←</span>
+                    <span class="screen-title">ETF 검색</span>
+                  </div>
+                  <div style="padding:10px 12px;">
+                    <div class="toss-search">
+                      <span class="toss-search-icon">🔍</span>
+                      <span class="toss-search-text">ETF 이름 또는 코드 검색</span>
+                    </div>
+                    <div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;">인기 ETF</div>
+                    <div class="toss-etf-item">
+                      <div class="toss-etf-icon" style="background:#eff6ff;">🔷</div>
+                      <div class="toss-etf-info">
+                        <div class="toss-etf-name">KODEX 반도체</div>
+                        <div class="toss-etf-sub">091160 · KRX 반도체</div>
+                      </div>
+                      <div class="toss-etf-price">
+                        <div class="toss-etf-val">실시간 시세</div>
+                        <div class="toss-etf-chg up">저위험 · 안정형</div>
+                      </div>
+                    </div>
+                    <div class="toss-etf-item">
+                      <div class="toss-etf-icon" style="background:#f0fdf4;">🚀</div>
+                      <div class="toss-etf-info">
+                        <div class="toss-etf-name">TIGER 반도체TOP10</div>
+                        <div class="toss-etf-sub">395160 · 삼성·하이닉스 집중</div>
+                      </div>
+                      <div class="toss-etf-price">
+                        <div class="toss-etf-val">실시간 시세</div>
+                        <div class="toss-etf-chg up">중위험 · 성장형</div>
+                      </div>
+                    </div>
+                    <div class="toss-etf-item">
+                      <div class="toss-etf-icon" style="background:#fdf4ff;">⚡</div>
+                      <div class="toss-etf-info">
+                        <div class="toss-etf-name">SOL 반도체후공정</div>
+                        <div class="toss-etf-sub">396500 · AI·HBM 직접 수혜</div>
+                      </div>
+                      <div class="toss-etf-price">
+                        <div class="toss-etf-val">92,300원</div>
+                        <div class="toss-etf-chg up">▲ 0.87%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="step-instructions">
+              <div class="instruction-item">
+                <div class="instruction-num">1</div>
+                <div class="instruction-text">토스증권 홈에서 상단 <strong>돋보기 아이콘(🔍)</strong>을 누릅니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">2</div>
+                <div class="instruction-text">ETF 이름을 검색하거나 <strong>종목코드</strong>를 입력합니다. (예: 091160 → KODEX 반도체)</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">3</div>
+                <div class="instruction-text">검색 결과에서 ETF를 선택하면 <strong>상세 페이지</strong>가 나옵니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">4</div>
+                <div class="instruction-text">상세 페이지에서 <strong>구성 종목, 운용보수, 1년 수익률</strong>을 꼭 확인하세요!</div>
+              </div>
+              <div class="instruction-tip">
+                💡 <strong>ETF 탭</strong>에서 종목코드 검색: KODEX 반도체(091160), TIGER 반도체TOP10(395160), SOL 반도체후공정(396500)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5 -->
+      <div class="step-card">
+        <div class="step-header" onclick="toggleStep(this)">
+          <div class="step-num" style="background:#dbeafe;color:#2563eb;">5</div>
+          <div class="step-info">
+            <div class="step-title">ETF 매수(구매)하기</div>
+            <div class="step-desc">원하는 수량 또는 금액을 입력하고 최종 확인 후 매수합니다. 장 시간 중에만 가능.</div>
+          </div>
+          <div class="step-expand">▼</div>
+        </div>
+        <div class="step-body">
+          <div class="phone-demo">
+            <div class="phone-wrap">
+              <div class="phone">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                  <div class="screen-topbar">
+                    <span class="screen-back">←</span>
+                    <span class="screen-title">KODEX 반도체</span>
+                  </div>
+                  <div style="padding:12px;">
+                    <div style="text-align:center;padding:10px 0;">
+                      <div style="font-size:22px;font-weight:900;">18,250원</div>
+                      <div style="font-size:11px;color:#ef4444;margin-top:2px;">▲ 225원 (+1.23%)</div>
+                    </div>
+                    <div class="toss-tab-bar">
+                      <div class="toss-tab active">매수</div>
+                      <div class="toss-tab">매도</div>
+                    </div>
+                    <div style="height:10px;"></div>
+                    <div class="toss-amount-input">
+                      <div class="toss-amount-label">구매 금액</div>
+                      <div class="toss-amount-value">50,000원</div>
+                      <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">≈ 2주 구매 가능</div>
+                    </div>
+                    <div class="toss-confirm-card">
+                      <div class="toss-confirm-row">
+                        <span class="toss-confirm-label">주문 수량</span>
+                        <span class="toss-confirm-value">2주</span>
+                      </div>
+                      <div class="toss-confirm-row">
+                        <span class="toss-confirm-label">주문 단가</span>
+                        <span class="toss-confirm-value">시장가</span>
+                      </div>
+                      <div class="toss-confirm-row">
+                        <span class="toss-confirm-label">수수료</span>
+                        <span class="toss-confirm-value">5.5원</span>
+                      </div>
+                    </div>
+                    <button class="toss-buy-btn">36,500원에 매수하기</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="step-instructions">
+              <div class="instruction-item">
+                <div class="instruction-num">1</div>
+                <div class="instruction-text">ETF 상세 페이지 하단의 <strong>'매수'</strong> 버튼을 누릅니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">2</div>
+                <div class="instruction-text"><strong>구매 금액</strong>을 입력합니다. (금액으로 입력하면 자동으로 수량 계산)</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">3</div>
+                <div class="instruction-text">주문 유형을 선택합니다. 초보자에게는 <strong>'시장가'</strong>를 추천드려요. (즉시 현재가로 체결)</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">4</div>
+                <div class="instruction-text">매수 금액, 수량, 수수료를 확인 후 <strong>'매수하기'</strong> 버튼을 누릅니다.</div>
+              </div>
+              <div class="instruction-item">
+                <div class="instruction-num">5</div>
+                <div class="instruction-text">PIN 번호 또는 생체인증으로 최종 확인하면 <strong>매수 완료!</strong> 🎉</div>
+              </div>
+              <div class="instruction-tip">
+                💡 <strong>장 운영 시간:</strong> 평일 오전 9:00 ~ 오후 3:30 (한국 시장 기준)<br>
+                토스증권은 <strong>소수점 투자</strong>도 지원해요. 1주가 비싸도 0.1주씩 구매 가능!
+              </div>
+              <div class="instruction-warn">
+                ⚠️ <strong>지정가 주문:</strong> 원하는 가격을 직접 입력하는 방식. 내가 원하는 가격이 될 때까지 기다려야 해요.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CHECKLIST -->
+  <div class="checklist">
+    <div class="checklist-title">✅ 첫 ETF 매수 전 체크리스트</div>
+    <div class="checklist-item"><div class="check-box">✓</div>토스 앱 설치 및 회원가입 완료</div>
+    <div class="checklist-item"><div class="check-box">✓</div>토스증권 계좌 개설 완료</div>
+    <div class="checklist-item"><div class="check-box">✓</div>투자 금액 입금 완료</div>
+    <div class="checklist-item"><div class="check-box">✓</div>원하는 ETF 검색 및 상세 정보 확인</div>
+    <div class="checklist-item"><div class="check-box">✓</div>장 운영 시간 확인 (평일 09:00~15:30)</div>
+    <div class="checklist-item"><div class="check-box">✓</div>투자금 손실 가능성 인지</div>
+  </div>
+
+  <!-- RECOMMENDED ETFs -->
+  <section class="section" id="etfs">
+    <div class="section-header">
+      <div class="section-tag">추천 ETF</div>
+      <div class="section-title">초보자를 위한 ETF 3선</div>
+      <div class="section-sub">검증된 대표 ETF들이에요. 투자 성향에 맞게 선택하세요.</div>
+    </div>
+    <div class="etf-info-grid">
+
+      <div class="etf-info-card">
+        <div class="etf-badge" style="background:#eff6ff;color:#2563eb;">저위험 · 안정형</div>
+        <div class="etf-card-name">KODEX 반도체</div>
+        <div class="etf-card-code">091160 · KRX 반도체</div>
+        <div class="etf-card-stat"><span class="etf-stat-key">추적지수</span><span class="etf-stat-val">KRX 반도체</span></div>
+        <div class="etf-card-stat"><span class="etf-stat-key">운용보수</span><span class="etf-stat-val">연 0.45%</span></div>
+        <div class="etf-card-stat"><span class="etf-stat-key">1년 수익률</span><span class="etf-stat-val" style="color:#10b981">실시간 조회</span></div>
+        <div class="etf-card-stat"><span class="etf-stat-key">특징</span><span class="etf-stat-val">삼성전자·SK하이닉스 비중 ↑</span></div>
+        <div style="margin-top:12px;background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;color:var(--text-sub);line-height:1.5;">
+          국내 반도체 대표주 전체를 담은 안정적 코어 ETF. KRX 반도체 지수 추종으로 섹터 전체에 분산 투자
+        </div>
+        <div style="margin-top:10px;background:var(--surface2);border-radius:8px;padding:10px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-sub);margin-bottom:7px;">📋 주요 구성 종목</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span style="background:#dbeafe;color:#1d4ed8;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">삼성전자 (약 30%)</span>
+            <span style="background:#dbeafe;color:#1d4ed8;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">SK하이닉스 (약 25%)</span>
+            <span style="background:#e0f2fe;color:#0369a1;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">삼성전기</span>
+            <span style="background:#e0f2fe;color:#0369a1;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">SK스퀘어</span>
+            <span style="background:#e0f2fe;color:#0369a1;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">한미반도체</span>
+            <span style="background:#e0f2fe;color:#0369a1;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">HPSP</span>
+            <span style="background:#e0f2fe;color:#0369a1;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">리노공업</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="etf-info-card">
+        <div class="etf-badge" style="background:#f0fdf4;color:#16a34a;">중위험 · 성장형</div>
+        <div class="etf-card-name">TIGER 반도체TOP10</div>
+        <div class="etf-card-code">395160 · 삼성·하이닉스 집중</div>
+        <div class="etf-card-stat"><span class="etf-stat-key">추적지수</span><span class="etf-stat-val">Fn반도체TOP10</span></div>
+        <div class="etf-card-stat"><span class="etf-stat-key">운용보수</span><span class="etf-stat-val">연 0.09%</span></div>
+        <div class="etf-card-stat"><span class="etf-stat-key">1년 수익률</span><span class="etf-stat-val" style="color:#10b981">실시간 조회</span></div>
+        <div class="etf-card-stat"><span class="etf-stat-key">특징</span><span class="etf-stat-val">초저보수 · 집중투자</span></div>
+        <div style="margin-top:12px;background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;color:var(--text-sub);line-height:1.5;">
+          삼성전자·SK하이닉스 등 반도체 상위 10개 종목 집중. 낮은 보수(0.09%)로 효율적 반도체 투자 가능
+        </div>
+        <div style="margin-top:10px;background:var(--surface2);border-radius:8px;padding:10px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-sub);margin-bottom:7px;">📋 주요 구성 종목</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span style="background:#dcfce7;color:#166534;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">삼성전자 (약 35%)</span>
+            <span style="background:#dcfce7;color:#166534;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">SK하이닉스 (약 28%)</span>
+            <span style="background:#bbf7d0;color:#15803d;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">삼성전기</span>
+            <span style="background:#bbf7d0;color:#15803d;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">한미반도체</span>
+            <span style="background:#bbf7d0;color:#15803d;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">SK스퀘어</span>
+            <span style="background:#bbf7d0;color:#15803d;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">DB하이텍</span>
+            <span style="background:#bbf7d0;color:#15803d;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">원익IPS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="etf-info-card">
+        <div class="etf-badge" style="background:#fdf4ff;color:#9333ea;">고위험 · 공격형</div>
+        <div class="etf-card-name">SOL 반도체후공정</div>
+        <div class="etf-card-code">396500 · AI·HBM 직접 수혜</div>
+        <div class="etf-card-stat"><span class="etf-stat-key">추적지수</span><span class="etf-stat-val">KRX 반도체후공정</span></div>
+        <div class="etf-card-stat"><span class="etf-stat-key">운용보수</span><span class="etf-stat-val">연 0.45%</span></div>
+        <div class="etf-card-stat"><span class="etf-stat-key">1년 수익률</span><span class="etf-stat-val" style="color:#10b981">실시간 조회</span></div>
+        <div class="etf-card-stat"><span class="etf-stat-key">특징</span><span class="etf-stat-val">HBM·패키징 집중 고성장</span></div>
+        <div style="margin-top:12px;background:var(--surface2);border-radius:8px;padding:10px;font-size:12px;color:var(--text-sub);line-height:1.5;">
+          AI 가속기에 필수적인 HBM·후공정 기업 집중 투자. AI 인프라 투자 확대의 직접 수혜 포지션
+        </div>
+        <div style="margin-top:10px;background:var(--surface2);border-radius:8px;padding:10px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-sub);margin-bottom:7px;">📋 주요 구성 종목</div>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;">
+            <span style="background:#f3e8ff;color:#7e22ce;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">한미반도체 (약 20%)</span>
+            <span style="background:#f3e8ff;color:#7e22ce;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">SK하이닉스 (약 18%)</span>
+            <span style="background:#ede9fe;color:#6d28d9;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">이오테크닉스</span>
+            <span style="background:#ede9fe;color:#6d28d9;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">하나머티리얼즈</span>
+            <span style="background:#ede9fe;color:#6d28d9;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">HPSP</span>
+            <span style="background:#ede9fe;color:#6d28d9;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">피에스케이</span>
+            <span style="background:#ede9fe;color:#6d28d9;border-radius:20px;padding:3px 9px;font-size:11px;font-weight:600;">원익QnC</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- RECOMMENDATION SECTION -->
+  <div class="rec-section">
+    <div class="rec-title">🎯 투자 성향별 추천 조합</div>
+    <div class="rec-sub">이 3가지 ETF 포트폴리오를 참고해보세요</div>
+    <div class="rec-grid">
+      <div class="rec-card">
+        <div class="rec-type">저위험 · 안정형</div>
+        <div class="rec-name">KODEX 반도체 60% + TIGER 반도체TOP10 30% + SOL 후공정 10%</div>
+        <div class="rec-return">예상 연수익 <strong>+10~15%</strong></div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-type">🚀 균형 성장형</div>
+        <div class="rec-name">KODEX 반도체 40% + TIGER 반도체TOP10 40% + SOL 후공정 20%</div>
+        <div class="rec-return">예상 연수익 <strong>+15~25%</strong></div>
+      </div>
+      <div class="rec-card">
+        <div class="rec-type">⚡ 공격 알파형</div>
+        <div class="rec-name">KODEX 반도체 30% + TIGER 반도체TOP10 30% + SOL 후공정 40%</div>
+        <div class="rec-return">예상 연수익 <strong>+20~35%</strong></div>
+      </div>
+    </div>
+    <div style="margin-top:16px;font-size:12px;opacity:0.65;text-align:center;">
+      ※ 예상 수익률은 역사적 평균 기반으로 미래를 보장하지 않습니다.
+    </div>
+  </div>
+
+  <!-- GLOSSARY -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-tag">용어 사전</div>
+      <div class="section-title">ETF 핵심 용어 정리</div>
+      <div class="section-sub">이것만 알아도 ETF가 쉬워집니다.</div>
+    </div>
+    <div class="glossary-grid">
+      <div class="glossary-card">
+        <div class="glossary-term">NAV (순자산가치)</div>
+        <div class="glossary-def">ETF가 실제로 보유한 자산의 가치. 시장가격과 약간 다를 수 있어요. 괴리율이 클수록 불리해요.</div>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">운용보수 (TER)</div>
+        <div class="glossary-def">ETF를 운용하는 데 드는 연간 비용. 0.05~0.5% 수준. 낮을수록 투자자에게 유리해요.</div>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">추적오차</div>
+        <div class="glossary-def">ETF가 목표 지수를 얼마나 잘 따라가는지의 차이. 낮을수록 지수를 잘 추적하는 것.</div>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">시장가 주문</div>
+        <div class="glossary-def">현재 시장 가격으로 즉시 체결하는 주문. 초보자에게 추천. 가격을 내가 정하지 않아요.</div>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">지정가 주문</div>
+        <div class="glossary-def">내가 원하는 가격을 직접 지정하는 주문. 원하는 가격이 될 때까지 대기해요.</div>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">분배금 (배당)</div>
+        <div class="glossary-def">ETF가 보유한 주식의 배당금을 투자자에게 나눠주는 것. 보통 분기 또는 반기별로 지급.</div>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">예수금</div>
+        <div class="glossary-def">증권 계좌에 입금된 현금 중 투자에 사용 가능한 금액. 주식 매수 시 여기서 차감됩니다.</div>
+      </div>
+      <div class="glossary-card">
+        <div class="glossary-term">소수점 투자</div>
+        <div class="glossary-def">1주 미만으로 구매하는 투자. 토스증권에서 지원. 비싼 주식도 소액으로 살 수 있어요.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <div class="section-header">
+      <div class="section-tag">FAQ</div>
+      <div class="section-title">자주 묻는 질문</div>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <div class="faq-q-icon">Q</div>
+          ETF는 얼마부터 살 수 있나요?
+        </div>
+        <div class="faq-a">
+          토스증권에서는 소수점 투자를 지원하여 <strong>1,000원부터</strong> 투자 가능해요. ETF 1주의 가격이 10만 원이어도 1,000원어치(0.01주)를 살 수 있습니다.
+          단, 소수점 투자는 해당 ETF가 지원해야 하며, 일반 매수 시에는 1주 단위로만 거래됩니다.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <div class="faq-q-icon">Q</div>
+          세금은 어떻게 되나요?
+        </div>
+        <div class="faq-a">
+          국내 ETF는 <strong>매매차익 비과세</strong>(단, 2025년부터 금융투자소득세 적용 시 변경 가능)이며, <strong>분배금은 15.4% 원천징수</strong>됩니다.
+          해외 ETF(미국 ETF 등)는 매매차익에 <strong>22% 양도소득세</strong>가 부과됩니다. 연간 250만 원까지는 기본 공제됩니다.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <div class="faq-q-icon">Q</div>
+          ETF와 주식의 차이가 뭔가요?
+        </div>
+        <div class="faq-a">
+          주식은 <strong>개별 기업</strong>에 투자(예: 삼성전자 1개 기업), ETF는 <strong>여러 기업을 묶은 바구니</strong>에 투자합니다.
+          ETF는 분산 투자로 리스크가 낮고, 운용보수가 발생하지만 전문 관리가 필요 없어요.
+          주식은 기업 분석 능력이 필요하지만 고수익 가능성이 더 높습니다.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <div class="faq-q-icon">Q</div>
+          매수한 ETF는 언제 팔 수 있나요?
+        </div>
+        <div class="faq-a">
+          <strong>평일 오전 9:00 ~ 오후 3:30</strong> (한국 시장 기준)에 언제든지 팔 수 있어요. 매도 후 결제는 T+2일(2영업일 후)에 완료되어
+          실제 예수금 반영은 2일 후입니다. 주말, 공휴일, 시장 휴장일에는 거래 불가능합니다.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <div class="faq-q-icon">Q</div>
+          토스증권 수수료는 얼마인가요?
+        </div>
+        <div class="faq-a">
+          국내 주식·ETF는 <strong>매매수수료 0.015%</strong>입니다. 10만 원 매수 시 수수료는 약 15원 수준으로 매우 저렴해요.
+          미국 주식·ETF의 경우 <strong>0.08%</strong>(최소 0.01달러)가 적용됩니다. 계좌 유지비용은 없습니다.
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <div class="faq-q-icon">Q</div>
+          적립식으로 매달 자동 구매할 수 있나요?
+        </div>
+        <div class="faq-a">
+          네! 토스증권은 <strong>'정기 투자' 기능</strong>을 제공해요. 원하는 ETF와 금액, 요일을 설정하면 자동으로 매수해 줍니다.
+          매월 일정 금액을 자동 투자하는 <strong>적립식 투자(DCA)</strong>는 가격 변동 리스크를 줄이는 가장 좋은 방법입니다.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  ⚠️ 본 가이드는 정보 제공 목적으로 작성되었으며, 투자 권유 또는 투자 자문이 아닙니다.<br>
+  ETF 투자는 원금 손실 위험이 있으며, 과거 수익률은 미래를 보장하지 않습니다.<br>
+  수익률 데이터는 참고용 추정치이며 실제와 다를 수 있습니다. 투자 전 <a href="https://tossinvest.com" target="_blank">토스증권 공식 사이트</a>에서 상품 설명서를 반드시 확인하세요.<br><br>
+  토스증권 고객센터: 1899-4065 · 평일 09:00~18:00
+</footer>
+
+<script>
+function toggleStep(header) {
+  const body = header.nextElementSibling;
+  const icon = header.querySelector('.step-expand');
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.step-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.step-expand').forEach(i => i.classList.remove('open'));
+  if (!isOpen) {
+    body.classList.add('open');
+    icon.classList.add('open');
+  }
+}
+
+function toggleFAQ(q) {
+  const a = q.nextElementSibling;
+  const isOpen = a.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(el => el.classList.remove('open'));
+  if (!isOpen) a.classList.add('open');
+}
+
+// Open first step by default
+document.addEventListener('DOMContentLoaded', () => {
+  const firstHeader = document.querySelector('.step-header');
+  if (firstHeader) toggleStep(firstHeader);
+});
+</script>
+</body>
+</html>

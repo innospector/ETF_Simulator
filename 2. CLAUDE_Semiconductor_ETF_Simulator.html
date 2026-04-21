@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>반도체 ETF 3종 DCA 시뮬레이터</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #0a0c14;
+  --bg2: #0f1120;
+  --bg3: #141728;
+  --surface: #1a1e30;
+  --surface2: #222740;
+  --surface3: #2a3050;
+  --border: #2e3454;
+  --border2: #3a4060;
+  --text: #f0f2ff;
+  --text-sub: #8b92b8;
+  --text-muted: #555e88;
+  --blue: #4f8fff;
+  --blue-glow: rgba(79,143,255,0.18);
+  --green: #00d68f;
+  --green-glow: rgba(0,214,143,0.15);
+  --orange: #ff8c42;
+  --orange-glow: rgba(255,140,66,0.15);
+  --purple: #b57bff;
+  --purple-glow: rgba(181,123,255,0.15);
+  --red: #ff5c7a;
+  --yellow: #ffd166;
+  /* ETF colors */
+  --c1: #4f8fff;   /* KODEX 반도체 */
+  --c2: #00d68f;   /* TIGER TOP10 */
+  --c3: #b57bff;   /* SOL 후공정 */
+  --radius: 18px;
+  --radius-sm: 12px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Noto Sans KR', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ─── HEADER ─── */
+.header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0 32px;
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(12px);
+}
+.header-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 60px;
+}
+.logo { display: flex; align-items: center; gap: 10px; }
+.logo-chip {
+  background: linear-gradient(135deg, var(--blue), var(--purple));
+  border-radius: 10px; width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; box-shadow: 0 0 16px var(--blue-glow);
+}
+.logo-text { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+.logo-sub { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+.header-tag {
+  background: var(--surface2); color: var(--blue);
+  padding: 5px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 700;
+  border: 1px solid var(--border);
+}
+
+/* ─── MAIN ─── */
+.main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+/* ─── HERO ─── */
+.hero {
+  background: linear-gradient(135deg, #0d1535 0%, #101828 50%, #0e0a20 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 44px 48px;
+  margin-bottom: 28px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -100px; right: -60px;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(79,143,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -80px; left: 100px;
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(181,123,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(79,143,255,0.12);
+  border: 1px solid rgba(79,143,255,0.25);
+  color: var(--blue); padding: 5px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+  margin-bottom: 18px;
+}
+.hero h1 {
+  font-size: 36px; font-weight: 900; letter-spacing: -1px;
+  line-height: 1.2; margin-bottom: 12px;
+}
+.hero h1 span { background: linear-gradient(90deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-desc { font-size: 14px; color: var(--text-sub); line-height: 1.7; max-width: 580px; }
+.hero-chips { display: flex; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
+.hero-chip {
+  background: var(--surface2); border: 1px solid var(--border);
+  padding: 6px 14px; border-radius: 20px;
+  font-size: 12px; font-weight: 600; color: var(--text-sub);
+}
+
+/* ─── LAYOUT ─── */
+.layout { display: flex; flex-direction: column; gap: 24px; }
+.col-left { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.col-right { display: flex; flex-direction: column; gap: 20px; }
+.result-chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+/* ─── CARD ─── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px;
+}
+.card-title {
+  font-size: 13px; font-weight: 700; color: var(--text-sub);
+  letter-spacing: 0.5px; text-transform: uppercase;
+  margin-bottom: 20px; display: flex; align-items: center; gap: 8px;
+}
+.card-title-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+/* ─── SLIDER BLOCK ─── */
+.slider-block { margin-bottom: 22px; }
+.slider-block:last-child { margin-bottom: 0; }
+.slider-label {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 10px;
+}
+.slider-name { font-size: 13px; color: var(--text-sub); font-weight: 600; }
+.slider-value {
+  font-size: 17px; font-weight: 900; color: var(--text);
+  min-width: 120px; text-align: right;
+}
+.slider-track {
+  position: relative; height: 8px;
+  background: var(--surface3);
+  border-radius: 4px; overflow: visible;
+}
+.slider-fill {
+  position: absolute; top: 0; left: 0; height: 100%;
+  border-radius: 4px; pointer-events: none;
+  transition: width 0.1s;
+}
+input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 8px;
+  background: transparent;
+  outline: none; cursor: pointer;
+  position: absolute; top: 0; left: 0;
+  margin: 0;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: white;
+  border: 3px solid var(--blue);
+  box-shadow: 0 0 12px var(--blue-glow), 0 2px 6px rgba(0,0,0,0.3);
+  margin-top: -7px;
+  cursor: grab;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input[type=range]::-webkit-slider-thumb:active { cursor: grabbing; }
+.slider-range { display: flex; justify-content: space-between; margin-top: 6px; }
+.slider-range span { font-size: 10px; color: var(--text-muted); }
+
+/* ─── WEIGHT SLIDERS ─── */
+.weight-block { margin-bottom: 18px; }
+.weight-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.weight-badge {
+  width: 8px; height: 32px; border-radius: 4px; flex-shrink: 0;
+}
+.weight-info { flex: 1; }
+.weight-name { font-size: 13px; font-weight: 700; }
+.weight-sub { font-size: 11px; color: var(--text-muted); }
+.weight-num { font-size: 20px; font-weight: 900; min-width: 54px; text-align: right; }
+.weight-total {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--surface2); border-radius: 10px;
+  padding: 12px 16px; margin-top: 16px;
+}
+.weight-total-label { font-size: 12px; color: var(--text-sub); }
+.weight-total-val { font-size: 16px; font-weight: 900; }
+.wt-ok { color: var(--green); }
+.wt-warn { color: var(--red); }
+
+/* ─── SCENARIO ─── */
+.scenario-row { display: flex; gap: 8px; }
+.scenario-btn {
+  flex: 1; padding: 10px 0; border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface2); color: var(--text-sub);
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  transition: all 0.2s;
+}
+.scenario-btn.active {
+  background: var(--blue); color: white;
+  border-color: var(--blue);
+  box-shadow: 0 0 16px var(--blue-glow);
+}
+.scenario-btn.bull.active { background: var(--green); border-color: var(--green); box-shadow: 0 0 16px var(--green-glow); }
+.scenario-btn.bear.active { background: var(--red); border-color: var(--red); }
+
+/* ─── RESULT CARDS ─── */
+.result-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.result-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  position: relative; overflow: hidden;
+}
+.result-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 3px;
+}
+.result-card.accent-blue::before { background: linear-gradient(90deg, var(--blue), var(--purple)); }
+.result-card.accent-green::before { background: var(--green); }
+.result-card.accent-orange::before { background: var(--orange); }
+.result-card.accent-purple::before { background: var(--purple); }
+.result-label { font-size: 13px; color: var(--text-sub); font-weight: 700; letter-spacing: 0.3px; margin-bottom: 8px; }
+.result-value { font-size: 26px; font-weight: 900; line-height: 1; }
+.result-sub { font-size: 13px; color: var(--text-sub); margin-top: 6px; font-weight: 600; }
+.result-main {
+  background: linear-gradient(135deg, var(--bg3), var(--surface));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  text-align: center;
+  margin-bottom: 14px;
+  position: relative; overflow: hidden;
+}
+.result-main::before {
+  content: '';
+  position: absolute; top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, var(--blue-glow) 0%, transparent 70%);
+}
+.result-main-label { font-size: 13px; color: var(--text-sub); margin-bottom: 8px; font-weight: 700; }
+.result-main-value {
+  font-size: 42px; font-weight: 900; letter-spacing: -1.5px;
+  background: linear-gradient(90deg, var(--blue), var(--green));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.result-main-sub { font-size: 15px; color: var(--text); margin-top: 6px; font-weight: 600; }
+
+/* ─── ETF CARDS ─── */
+.etf-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+.etf-card-link { text-decoration: none; color: inherit; display: block; transition: transform 0.2s; }
+.etf-card-link:hover { transform: translateY(-4px); }
+.etf-card {
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  border: 1px solid;
+  position: relative; overflow: hidden;
+}
+.etf-card::after {
+  content: '';
+  position: absolute; top: -30px; right: -30px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  opacity: 0.07;
+}
+.etf-card.c1 { background: #0d1629; border-color: rgba(79,143,255,0.25); }
+.etf-card.c1::after { background: var(--c1); }
+.etf-card.c2 { background: #091a16; border-color: rgba(0,214,143,0.25); }
+.etf-card.c2::after { background: var(--c2); }
+.etf-card.c3 { background: #130d20; border-color: rgba(181,123,255,0.25); }
+.etf-card.c3::after { background: var(--c3); }
+
+.etf-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+.etf-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.etf-title { font-size: 15px; font-weight: 800; }
+.etf-code { font-size: 11px; margin-top: 2px; }
+.etf-role-badge {
+  margin-left: auto; padding: 4px 10px; border-radius: 6px;
+  font-size: 11px; font-weight: 700; white-space: nowrap;
+}
+.etf-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
+.etf-stat { background: rgba(255,255,255,0.04); border-radius: 8px; padding: 10px; text-align: center; }
+.etf-stat-v { font-size: 14px; font-weight: 800; }
+.etf-stat-k { font-size: 10px; margin-top: 2px; }
+.etf-desc { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
+.etf-weight-bar { height: 4px; border-radius: 2px; margin-top: 14px; }
+
+/* ─── CHART ─── */
+.chart-wrap { position: relative; }
+.chart-legend-custom { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text); font-weight: 600; }
+.legend-line { width: 24px; height: 3px; border-radius: 2px; }
+
+/* ─── BREAKDOWN TABLE ─── */
+.breakdown-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.breakdown-table th {
+  background: var(--surface2); color: var(--text);
+  padding: 12px 14px; text-align: left;
+  font-size: 13px; font-weight: 800; letter-spacing: 0.3px;
+}
+.breakdown-table th:first-child { border-radius: 8px 0 0 8px; }
+.breakdown-table th:last-child { border-radius: 0 8px 8px 0; }
+.breakdown-table td { padding: 13px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.breakdown-table tr:last-child td { border-bottom: none; }
+
+/* ─── MILESTONE ─── */
+.milestone-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.milestone-card {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 16px; text-align: center;
+}
+.ms-year { font-size: 13px; color: var(--text-sub); font-weight: 700; margin-bottom: 6px; }
+.ms-amount { font-size: 18px; font-weight: 900; }
+.ms-gain { font-size: 13px; color: var(--green); margin-top: 4px; font-weight: 700; }
+.ms-invested { font-size: 12px; color: var(--text-sub); margin-top: 3px; font-weight: 600; }
+
+
+
+/* ─── PROGRESS BAR ─── */
+.progress-bar { height: 8px; background: var(--surface3); border-radius: 4px; overflow: hidden; margin-top: 8px; }
+.progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+
+/* ─── SECTION HEADER ─── */
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.section-title { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+.section-badge {
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text-muted); padding: 4px 12px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+}
+
+/* ─── GLOW EFFECTS ─── */
+.glow-blue { box-shadow: 0 0 24px var(--blue-glow); }
+.glow-green { box-shadow: 0 0 24px var(--green-glow); }
+
+/* ─── DIVIDER ─── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+/* ─── FOOTER ─── */
+.footer {
+  text-align: center; padding: 32px 24px;
+  color: var(--text-muted); font-size: 11px; line-height: 1.8;
+  border-top: 1px solid var(--border);
+  margin-top: 12px;
+}
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1100px) {
+  .col-left { grid-template-columns: repeat(2, 1fr); }
+  .milestone-row { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+  .result-chart-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 800px) {
+  .col-left { grid-template-columns: 1fr; }
+  .etf-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .result-grid { grid-template-columns: 1fr; }
+  .milestone-row { grid-template-columns: repeat(2, 1fr); }
+  .hero { padding: 30px 24px; }
+  .hero h1 { font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-chip">💎</div>
+      <div>
+        <div class="logo-text">반도체 ETF 3종 DCA 시뮬레이터</div>
+        <div class="logo-sub">Semiconductor ETF Portfolio Simulator</div>
+      </div>
+    </div>
+    <div class="header-tag">AI·HBM 시대 투자 전략</div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">SEMICONDUCTOR ETF · DCA STRATEGY</div>
+    <h1>반도체 ETF 3종으로<br><span>15년 자산을 설계하다</span></h1>
+    <div class="hero-desc" style="font-weight: 600; font-size: 15px; margin-top: 10px;">
+      KODEX 반도체(안정코어) · TIGER 반도체TOP10(성장엔진) · SOL 반도체후공정(알파)
+    </div>
+  </div>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- ===== LEFT PANEL ===== -->
+    <div class="col-left">
+
+      <!-- INVESTMENT VARIABLES -->
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-dot" style="background:var(--blue)"></span>
+          투자 변수 설정
+        </div>
+
+        <!-- 투자 기간 -->
+        <div class="slider-block">
+          <div class="slider-label">
+            <span class="slider-name">투자 기간</span>
+            <span class="slider-value" id="val-years">15년</span>
+          </div>
+          <div class="slider-track">
+            <div class="slider-fill" id="fill-years" style="background:var(--blue);width:56.7%"></div>
+            <input type="range" id="sl-years" min="1" max="30" value="15" step="1"
+              oninput="onSlider('years', this.value)">
+          </div>
+          <div class="slider-range"><span>1년</span><span>30년</span></div>
+        </div>
+
+        <!-- 초기 투자금 -->
+        <div class="slider-block">
+          <div class="slider-label">
+            <span class="slider-name">초기 투자금</span>
+            <span class="slider-value" id="val-initial">500만원</span>
+          </div>
+          <div class="slider-track">
+            <div class="slider-fill" id="fill-initial" style="background:var(--green);width:9.2%"></div>
+            <input type="range" id="sl-initial" min="100" max="5000" value="500" step="100"
+              oninput="onSlider('initial', this.value)"
+              style="--thumb-color:var(--green)">
+          </div>
+          <div class="slider-range"><span>100만원</span><span>5,000만원</span></div>
+        </div>
+
+        <!-- 월 투자금 -->
+        <div class="slider-block">
+          <div class="slider-label">
+            <span class="slider-name">월 투자금</span>
+            <span class="slider-value" id="val-monthly">80만원</span>
+          </div>
+          <div class="slider-track">
+            <div class="slider-fill" id="fill-monthly" style="background:var(--orange);width:15.6%"></div>
+            <input type="range" id="sl-monthly" min="10" max="500" value="80" step="10"
+              oninput="onSlider('monthly', this.value)">
+          </div>
+          <div class="slider-range"><span>10만원</span><span>500만원</span></div>
+        </div>
+
+        <!-- 운용보수 -->
+        <div class="slider-block">
+          <div class="slider-label">
+            <span class="slider-name">세금·비용 반영</span>
+            <span class="slider-value" id="val-fee">0.3%</span>
+          </div>
+          <div class="slider-track">
+            <div class="slider-fill" id="fill-fee" style="background:var(--red);width:15%"></div>
+            <input type="range" id="sl-fee" min="0" max="2" value="0.3" step="0.1"
+              oninput="onSlider('fee', this.value)">
+          </div>
+          <div class="slider-range"><span>0%</span><span>2%</span></div>
+        </div>
+      </div>
+
+      <!-- ETF WEIGHTS -->
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-dot" style="background:var(--purple)"></span>
+          ETF 비중 조절
+        </div>
+
+        <!-- ETF1 -->
+        <div class="weight-block">
+          <div class="weight-header">
+            <div class="weight-badge" style="background:var(--c1)"></div>
+            <div class="weight-info">
+              <div class="weight-name" style="color:var(--c1)">KODEX 반도체</div>
+              <div class="weight-sub" style="display:flex;align-items:center;gap:6px;">
+                <span style="color:var(--c1);opacity:0.85;">안정 코어 · 연 10~15%</span>
+                <span style="display:inline-flex;align-items:center;gap:2px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.3);border-radius:20px;padding:1px 7px;font-size:10px;font-weight:700;color:#10b981;white-space:nowrap;">저위험</span>
+              </div>
+            </div>
+            <div class="weight-num" id="wval-0" style="color:var(--c1)">40%</div>
+          </div>
+          <div class="slider-track">
+            <div class="slider-fill" id="wfill-0" style="background:var(--c1);width:40%"></div>
+            <input type="range" id="wsl-0" min="0" max="100" value="40" step="5"
+              oninput="onWeight(0, this.value)">
+          </div>
+        </div>
+
+        <!-- ETF2 -->
+        <div class="weight-block">
+          <div class="weight-header">
+            <div class="weight-badge" style="background:var(--c2)"></div>
+            <div class="weight-info">
+              <div class="weight-name" style="color:var(--c2)">TIGER 반도체TOP10</div>
+              <div class="weight-sub" style="display:flex;align-items:center;gap:6px;">
+                <span style="color:var(--c2);opacity:0.85;">성장 엔진 · 연 18~28%</span>
+                <span style="display:inline-flex;align-items:center;gap:2px;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35);border-radius:20px;padding:1px 7px;font-size:10px;font-weight:700;color:#f59e0b;white-space:nowrap;">중위험</span>
+              </div>
+            </div>
+            <div class="weight-num" id="wval-1" style="color:var(--c2)">40%</div>
+          </div>
+          <div class="slider-track">
+            <div class="slider-fill" id="wfill-1" style="background:var(--c2);width:40%"></div>
+            <input type="range" id="wsl-1" min="0" max="100" value="40" step="5"
+              oninput="onWeight(1, this.value)">
+          </div>
+        </div>
+
+        <!-- ETF3 -->
+        <div class="weight-block">
+          <div class="weight-header">
+            <div class="weight-badge" style="background:var(--c3)"></div>
+            <div class="weight-info">
+              <div class="weight-name" style="color:var(--c3)">SOL 반도체후공정</div>
+              <div class="weight-sub" style="display:flex;align-items:center;gap:6px;">
+                <span style="color:var(--c3);opacity:0.85;">알파 · AI·HBM 수혜</span>
+                <span style="display:inline-flex;align-items:center;gap:2px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:20px;padding:1px 7px;font-size:10px;font-weight:700;color:#ef4444;white-space:nowrap;">고위험</span>
+              </div>
+            </div>
+            <div class="weight-num" id="wval-2" style="color:var(--c3)">20%</div>
+          </div>
+          <div class="slider-track">
+            <div class="slider-fill" id="wfill-2" style="background:var(--c3);width:20%"></div>
+            <input type="range" id="wsl-2" min="0" max="100" value="20" step="5"
+              oninput="onWeight(2, this.value)">
+          </div>
+        </div>
+
+        <div class="weight-total">
+          <span class="weight-total-label">비중 합계</span>
+          <span class="weight-total-val" id="weight-total">100% ✓</span>
+        </div>
+      </div>
+
+      <!-- SCENARIO -->
+      <div class="card">
+        <div class="card-title">
+          <span class="card-title-dot" style="background:var(--yellow)"></span>
+          시장 시나리오
+        </div>
+        <div class="scenario-row">
+          <button class="scenario-btn bear" onclick="setScenario('bear')">약세</button>
+          <button class="scenario-btn base active" onclick="setScenario('base')">기본</button>
+          <button class="scenario-btn bull" onclick="setScenario('bull')">강세</button>
+        </div>
+        <div style="margin-top:14px;background:var(--surface2);border-radius:10px;padding:14px;">
+          <div id="scenario-desc" style="font-size:12px;color:var(--text-sub);line-height:1.6;">
+            <strong style="color:var(--blue)">기본 시나리오</strong>: 역사적 평균 수익률 적용.<br>
+            반도체 업종 평균 성장 흐름 기준으로 계산합니다.
+          </div>
+        </div>
+
+        <!-- Per-ETF return sliders -->
+        <div style="margin-top:16px;">
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:12px;font-weight:700;">▸ ETF별 기대 연수익률 직접 조정</div>
+
+          <div class="slider-block" style="margin-bottom:16px;">
+            <div class="slider-label">
+              <span class="slider-name" style="color:var(--c1)">KODEX 반도체</span>
+              <span class="slider-value" id="rval-0" style="color:var(--c1);font-size:15px;">12%</span>
+            </div>
+            <div class="slider-track">
+              <div class="slider-fill" id="rfill-0" style="background:var(--c1);width:26.7%"></div>
+              <input type="range" id="rsl-0" min="-20" max="60" value="12" step="1"
+                oninput="onReturn(0, this.value)">
+            </div>
+            <div class="slider-range"><span>-20%</span><span>+60%</span></div>
+          </div>
+
+          <div class="slider-block" style="margin-bottom:16px;">
+            <div class="slider-label">
+              <span class="slider-name" style="color:var(--c2)">TIGER TOP10</span>
+              <span class="slider-value" id="rval-1" style="color:var(--c2);font-size:15px;">22%</span>
+            </div>
+            <div class="slider-track">
+              <div class="slider-fill" id="rfill-1" style="background:var(--c2);width:52.5%"></div>
+              <input type="range" id="rsl-1" min="-20" max="60" value="22" step="1"
+                oninput="onReturn(1, this.value)">
+            </div>
+            <div class="slider-range"><span>-20%</span><span>+60%</span></div>
+          </div>
+
+          <div class="slider-block" style="margin-bottom:0;">
+            <div class="slider-label">
+              <span class="slider-name" style="color:var(--c3)">SOL 후공정</span>
+              <span class="slider-value" id="rval-2" style="color:var(--c3);font-size:15px;">18%</span>
+            </div>
+            <div class="slider-track">
+              <div class="slider-fill" id="rfill-2" style="background:var(--c3);width:47.5%"></div>
+              <input type="range" id="rsl-2" min="-20" max="60" value="18" step="1"
+                oninput="onReturn(2, this.value)">
+            </div>
+            <div class="slider-range"><span>-20%</span><span>+60%</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /col-left -->
+
+    <!-- ===== RIGHT PANEL ===== -->
+    <div class="col-right">
+
+      <div class="result-chart-row">
+      <!-- MAIN RESULT -->
+      <div class="card" style="display:flex; flex-direction:column; justify-content:center;">
+        <div class="section-head">
+          <div class="section-title">📈 투자 결과 요약</div>
+          <div class="section-badge" id="result-period-badge" style="font-size:14px;font-weight:800;color:#4f8fff;border-color:#4f8fff55;background:rgba(79,143,255,0.10);padding:5px 16px;">15년 후</div>
+        </div>
+
+        <div class="result-main glow-blue">
+          <div class="result-main-label">최종 예상 자산 (세후 추정)</div>
+          <div class="result-main-value" id="result-final">—</div>
+          <div class="result-main-sub" id="result-sub">계산 중...</div>
+        </div>
+
+        <div class="result-grid">
+          <div class="result-card accent-blue">
+            <div class="result-label">총 투자 원금</div>
+            <div class="result-value" id="r-invested" style="color:var(--text)">—</div>
+            <div class="result-sub">초기금 + 월납입 합계</div>
+          </div>
+          <div class="result-card accent-green">
+            <div class="result-label">총 수익금</div>
+            <div class="result-value" id="r-profit" style="color:var(--green)">—</div>
+            <div class="result-sub" id="r-profit-pct">수익률 계산 중</div>
+          </div>
+          <div class="result-card accent-orange">
+            <div class="result-label">포트폴리오 연수익률</div>
+            <div class="result-value" id="r-annual" style="color:var(--orange)">—</div>
+            <div class="result-sub">가중평균 적용</div>
+          </div>
+          <div class="result-card accent-purple">
+            <div class="result-label">자산 증식 배수</div>
+            <div class="result-value" id="r-multiple" style="color:var(--purple)">—</div>
+            <div class="result-sub">원금 대비 배율</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GROWTH CHART -->
+      <div class="card" style="display:flex; flex-direction:column;">
+        <div class="section-head">
+          <div class="section-title">📊 자산 성장 시뮬레이션</div>
+          <div class="chart-legend-custom">
+            <div class="legend-item"><div class="legend-line" style="background:linear-gradient(90deg,var(--blue),var(--green))"></div> 포트폴리오</div>
+            <div class="legend-item"><div class="legend-line" style="background:var(--border2)"></div> 원금 누적</div>
+          </div>
+        </div>
+        <div class="chart-wrap" style="flex:1; display:flex; align-items:center;">
+          <canvas id="chart-growth" height="280"></canvas>
+        </div>
+      </div>
+      </div> <!-- /.result-chart-row -->
+
+      <!-- ETF BREAKDOWN -->
+      <div class="card">
+        <div class="section-head">
+          <div class="section-title">💠 ETF별 포트폴리오 분석</div>
+        </div>
+        <div class="etf-grid">
+
+          <!-- KODEX -->
+          <a href="https://finance.naver.com/item/main.naver?code=091160" target="_blank" class="etf-card-link">
+          <div class="etf-card c1">
+            <div class="etf-header">
+              <div class="etf-icon" style="background:rgba(79,143,255,0.12)">🔷</div>
+              <div>
+                <div class="etf-title" style="color:var(--c1)">KODEX 반도체</div>
+                <div class="etf-code" style="color:var(--c1);opacity:0.85;font-weight:600;">091160 · KRX 반도체</div>
+              </div>
+            </div>
+            <div style="display:inline-block;background:rgba(79,143,255,0.12);color:var(--c1);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-bottom:12px;">
+              ① 안정 코어
+            </div>
+            <div class="etf-stats">
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c1)" id="etf0-weight">40%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">비중</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c1)" id="etf0-ret">12%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">연수익률</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--text-muted)">30종+</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">구성종목</div>
+              </div>
+            </div>
+            <div class="etf-desc" style="color:var(--c1);opacity:0.8;font-weight:500;">종목 30개 이상 분산으로 변동성 낮음. 포트폴리오 중심축 역할.</div>
+            <div class="etf-weight-bar" id="etf0-bar" style="background:var(--c1);width:40%"></div>
+          </div>
+          </a>
+
+          <!-- TIGER -->
+          <a href="https://finance.naver.com/item/main.naver?code=395160" target="_blank" class="etf-card-link">
+          <div class="etf-card c2">
+            <div class="etf-header">
+              <div class="etf-icon" style="background:rgba(0,214,143,0.1)">🚀</div>
+              <div>
+                <div class="etf-title" style="color:var(--c2)">TIGER 반도체TOP10</div>
+                <div class="etf-code" style="color:var(--c2);opacity:0.85;font-weight:600;">395160 · 삼성·하이닉스 집중</div>
+              </div>
+            </div>
+            <div style="display:inline-block;background:rgba(0,214,143,0.1);color:var(--c2);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-bottom:12px;">
+              ② 성장 가속
+            </div>
+            <div class="etf-stats">
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c2)" id="etf1-weight">40%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">비중</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c2)" id="etf1-ret">22%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">연수익률</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--text-muted)">상위10</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">집중도</div>
+              </div>
+            </div>
+            <div class="etf-desc" style="color:var(--c2);opacity:0.8;font-weight:500;">상위 10개 집중 포트폴리오. 수익률 상위권 (26~40%). 변동성 큼.</div>
+            <div class="etf-weight-bar" id="etf1-bar" style="background:var(--c2);width:40%"></div>
+          </div>
+          </a>
+
+          <!-- SOL -->
+          <a href="https://finance.naver.com/item/main.naver?code=396500" target="_blank" class="etf-card-link">
+          <div class="etf-card c3">
+            <div class="etf-header">
+              <div class="etf-icon" style="background:rgba(181,123,255,0.1)">⚡</div>
+              <div>
+                <div class="etf-title" style="color:var(--c3)">SOL 반도체후공정</div>
+                <div class="etf-code" style="color:var(--c3);opacity:0.85;font-weight:600;">396500 · AI·HBM 직접 수혜</div>
+              </div>
+            </div>
+            <div style="display:inline-block;background:rgba(181,123,255,0.1);color:var(--c3);padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;margin-bottom:12px;">
+              ③ 알파 수익
+            </div>
+            <div class="etf-stats">
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c3)" id="etf2-weight">20%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">비중</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--c3)" id="etf2-ret">18%</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">연수익률</div>
+              </div>
+              <div class="etf-stat">
+                <div class="etf-stat-v" style="color:var(--text-muted)">HBM</div>
+                <div class="etf-stat-k" style="color:var(--text-muted)">핵심</div>
+              </div>
+            </div>
+            <div class="etf-desc" style="color:var(--c3);opacity:0.8;font-weight:500;">후공정·소부장 집중. AI 인프라 확장 직접 수혜. 급등 구간 포착.</div>
+            <div class="etf-weight-bar" id="etf2-bar" style="background:var(--c3);width:20%"></div>
+          </div>
+          </a>
+        </div>
+
+        <!-- Breakdown Table -->
+        <div style="overflow-x:auto;">
+        <table class="breakdown-table">
+          <thead>
+            <tr>
+              <th>ETF</th>
+              <th>비중</th>
+              <th>연수익률</th>
+              <th>기여 수익률</th>
+              <th id="th-final">최종 예상 기여액</th>
+            </tr>
+          </thead>
+          <tbody id="breakdown-body"></tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2" style="padding:13px 14px;font-weight:700;font-size:13px;">포트폴리오 합계</td>
+              <td style="padding:13px 14px;font-weight:800;color:var(--green)" id="portfolio-annual-ret">—</td>
+              <td style="padding:13px 14px;font-weight:800;color:var(--blue)" id="portfolio-contrib">100%</td>
+              <td style="padding:13px 14px;font-weight:800;font-size:15px;color:var(--blue)" id="portfolio-total">—</td>
+            </tr>
+          </tfoot>
+        </table>
+        </div>
+      </div>
+
+      <!-- MILESTONE -->
+      <div class="card">
+        <div class="section-head">
+          <div class="section-title">🏁 연도별 자산 마일스톤</div>
+          <div class="section-badge">누적 성장</div>
+        </div>
+        <div class="milestone-row" id="milestone-row"></div>
+      </div>
+
+
+
+    </div><!-- /col-right -->
+  </div><!-- /layout -->
+
+</main>
+
+<footer class="footer">
+  ⚠️ 본 시뮬레이터는 과거 수익률 및 가정 수익률 기반 추정이며, 미래 실제 수익을 보장하지 않습니다.<br>
+  ETF 투자는 원금 손실 위험이 있으며, 수익률은 운용보수·세금·환율 변동 미반영 기준입니다.<br>
+  투자 결정 전 투자설명서를 반드시 확인하고 본인의 투자 성향에 맞는 결정을 내리세요.
+</footer>
+
+<script>
+// =============================================
+// STATE
+// =============================================
+const S = {
+  years: 15,
+  initial: 500,       // 만원
+  monthly: 80,        // 만원
+  fee: 0.3,           // %
+  weights: [40, 40, 20],
+  returns: [12, 22, 18], // base %
+  scenario: 'base',
+};
+
+const SCENARIO_MULT = { bear: 0.45, base: 1.0, bull: 1.55 };
+const SCENARIO_LABELS = {
+  bear: '수익률 -55% 적용 (반도체 하강 사이클)',
+  base: '역사적 평균 수익률 적용',
+  bull: '수익률 +55% 적용 (AI 반도체 슈퍼사이클)',
+};
+
+let growthChart = null;
+
+// =============================================
+// FORMAT
+// =============================================
+function fmt(manwon) {
+  const v = Math.round(manwon * 10000);
+  if (v >= 1_0000_0000) return (v / 1_0000_0000).toFixed(2) + '억원';
+  if (v >= 1000_0000)  return (v / 1000_0000).toFixed(1) + '천만원';
+  return (v / 10000).toFixed(0) + '만원';
+}
+function fmtPct(v) { return (v >= 0 ? '+' : '') + v.toFixed(1) + '%'; }
+
+// =============================================
+// DCA SIMULATION
+// =============================================
+function simulate(annualRet, years, initial, monthly, fee) {
+  // annualRet in %, initial/monthly in 만원
+  const netRet = annualRet - fee;
+  const r = netRet / 100 / 12; // monthly rate
+  const n = years * 12;
+  // FV = initial * (1+r)^n + monthly * [(1+r)^n - 1] / r
+  const growth = Math.pow(1 + r, n);
+  let fv;
+  if (Math.abs(r) < 1e-9) {
+    fv = initial + monthly * n;
+  } else {
+    fv = initial * growth + monthly * (growth - 1) / r;
+  }
+  return Math.max(fv, 0);
+}
+
+function portfolioAnnualReturn(scenario) {
+  const mult = SCENARIO_MULT[scenario];
+  const total = S.weights.reduce((a, b) => a + b, 0) || 100;
+  let ret = 0;
+  S.weights.forEach((w, i) => {
+    ret += (w / total) * S.returns[i] * mult;
+  });
+  return ret;
+}
+
+// =============================================
+// MAIN RENDER
+// =============================================
+function renderAll() {
+  const years = S.years;
+  const initial = S.initial;
+  const monthly = S.monthly;
+  const fee = S.fee;
+  const totalInvested = initial + monthly * years * 12;
+  const annualRet = portfolioAnnualReturn(S.scenario);
+
+  const final = simulate(annualRet, years, initial, monthly, fee);
+  const profit = final - totalInvested;
+  const profitPct = totalInvested > 0 ? (profit / totalInvested * 100) : 0;
+  const multiple = totalInvested > 0 ? (final / totalInvested) : 1;
+
+  // Main results
+  document.getElementById('result-final').textContent = fmt(final);
+  document.getElementById('result-sub').textContent =
+    `연수익률 ${annualRet.toFixed(1)}% · ${years}년 월 ${monthly}만원 적립`;
+  document.getElementById('result-period-badge').textContent = `${years}년 후`;
+  document.getElementById('r-invested').textContent = fmt(totalInvested);
+  document.getElementById('r-profit').textContent = fmt(profit);
+  document.getElementById('r-profit-pct').textContent = `수익률 ${fmtPct(profitPct)}`;
+  document.getElementById('r-annual').textContent = fmtPct(annualRet);
+  document.getElementById('r-multiple').textContent = multiple.toFixed(2) + '배';
+
+  // ETF cards
+  const totalW = S.weights.reduce((a,b) => a+b, 0) || 100;
+  S.weights.forEach((w, i) => {
+    document.getElementById(`etf${i}-weight`).textContent = Math.round(w / totalW * 100) + '%';
+    document.getElementById(`etf${i}-ret`).textContent = fmtPct(S.returns[i] * SCENARIO_MULT[S.scenario]);
+    document.getElementById(`etf${i}-bar`).style.width = (w / totalW * 100) + '%';
+  });
+
+  // Breakdown table
+  const NAMES = ['KODEX 반도체', 'TIGER TOP10', 'SOL 후공정'];
+  const COLORS = ['var(--c1)', 'var(--c2)', 'var(--c3)'];
+  let tbodyHTML = '';
+  S.weights.forEach((w, i) => {
+    const normalW = w / totalW;
+    const etfRet = S.returns[i] * SCENARIO_MULT[S.scenario];
+    const contrib = normalW * etfRet;
+    const etfFinal = simulate(etfRet, years, initial * normalW, monthly * normalW, fee);
+    tbodyHTML += `
+      <tr>
+        <td style="font-weight:800;color:${COLORS[i]};font-size:14px;">${NAMES[i]}</td>
+        <td><span style="background:${COLORS[i]}22;color:${COLORS[i]};padding:4px 12px;border-radius:6px;font-weight:800;font-size:13px;">${Math.round(normalW*100)}%</span></td>
+        <td style="color:${COLORS[i]};font-weight:800;font-size:14px;">${fmtPct(etfRet)}</td>
+        <td style="font-weight:700;font-size:14px;color:var(--text-sub);">${fmtPct(contrib)}</td>
+        <td style="font-weight:900;font-size:15px;color:var(--text);">${fmt(etfFinal)}</td>
+      </tr>`;
+  });
+  document.getElementById('breakdown-body').innerHTML = tbodyHTML;
+  document.getElementById('portfolio-annual-ret').textContent = fmtPct(annualRet);
+  document.getElementById('portfolio-total').textContent = fmt(final);
+
+  // Growth chart
+  renderGrowthChart(years, initial, monthly, fee, annualRet);
+
+  // Milestone
+  renderMilestone(years, initial, monthly, fee, annualRet, totalInvested);
+}
+
+// =============================================
+// GROWTH CHART
+// =============================================
+function renderGrowthChart(years, initial, monthly, fee, annualRet) {
+  const labels = [];
+  const portfolioData = [];
+  const investedData = [];
+
+  for (let y = 0; y <= years; y++) {
+    labels.push(y === 0 ? '현재' : `${y}년`);
+    const fv = simulate(annualRet, y, initial, monthly, fee);
+    portfolioData.push(parseFloat((fv * 10000).toFixed(0)));
+    investedData.push(parseFloat(((initial + monthly * y * 12) * 10000).toFixed(0)));
+  }
+
+  if (growthChart) growthChart.destroy();
+  const ctx = document.getElementById('chart-growth').getContext('2d');
+
+  // Gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, 400);
+  grad.addColorStop(0, 'rgba(79,143,255,0.22)');
+  grad.addColorStop(1, 'rgba(79,143,255,0.01)');
+
+  growthChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: '포트폴리오 자산',
+          data: portfolioData,
+          borderColor: '#4f8fff',
+          backgroundColor: grad,
+          fill: true,
+          tension: 0.4,
+          borderWidth: 2.5,
+          pointRadius: years <= 15 ? 3 : 1,
+          pointBackgroundColor: '#4f8fff',
+        },
+        {
+          label: '누적 원금',
+          data: investedData,
+          borderColor: '#3a4060',
+          backgroundColor: 'transparent',
+          fill: false,
+          tension: 0.1,
+          borderWidth: 1.5,
+          borderDash: [6, 4],
+          pointRadius: 0,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: { intersect: false, mode: 'index' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1e30',
+          borderColor: '#2e3454',
+          borderWidth: 1,
+          titleColor: '#8b92b8',
+          bodyColor: '#f0f2ff',
+          callbacks: {
+            label: ctx => {
+              const v = ctx.raw;
+              let label = ctx.dataset.label + ': ';
+              if (v >= 1_0000_0000) label += (v / 1_0000_0000).toFixed(2) + '억원';
+              else label += (v / 10000).toFixed(0) + '만원';
+              return label;
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          ticks: {
+            color: '#555e88',
+            callback: v => {
+              if (v >= 1_0000_0000) return (v/1_0000_0000).toFixed(1) + '억';
+              return (v/10000).toFixed(0) + '만';
+            },
+            font: { size: 11 }
+          },
+          grid: { color: 'rgba(255,255,255,0.04)' }
+        },
+        x: {
+          ticks: { color: '#555e88', font: { size: 11 }, maxTicksLimit: 16 },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+}
+
+// =============================================
+// MILESTONE
+// =============================================
+function renderMilestone(years, initial, monthly, fee, annualRet, totalInvested) {
+  const milestones = [];
+  const steps = [1, 3, 5, 10, 15, 20, 25, 30].filter(y => y <= years);
+  if (!steps.includes(years)) steps.push(years);
+  steps.sort((a,b) => a-b);
+  const show = steps.slice(-5);
+
+  let html = '';
+  show.forEach(y => {
+    const fv = simulate(annualRet, y, initial, monthly, fee);
+    const invested = initial + monthly * y * 12;
+    const gain = fv - invested;
+    const gainPct = invested > 0 ? (gain / invested * 100) : 0;
+    html += `
+      <div class="milestone-card">
+        <div class="ms-year">${y}년 후</div>
+        <div class="ms-amount" style="color:var(--blue)">${fmt(fv)}</div>
+        <div class="ms-gain">+${fmtPct(gainPct)}</div>
+        <div class="ms-invested">원금 ${fmt(invested)}</div>
+      </div>`;
+  });
+  document.getElementById('milestone-row').innerHTML = html;
+}
+
+
+// =============================================
+// SLIDER HANDLERS
+// =============================================
+function onSlider(key, val) {
+  val = parseFloat(val);
+  S[key === 'years' ? 'years'
+     : key === 'initial' ? 'initial'
+     : key === 'monthly' ? 'monthly'
+     : 'fee'] = val;
+
+  const pct = {
+    years:   (val - 1) / 29 * 100,
+    initial: (val - 100) / 4900 * 100,
+    monthly: (val - 10) / 490 * 100,
+    fee:     (val - 0) / 2 * 100,
+  };
+
+  document.getElementById(`fill-${key}`).style.width = `calc(${pct[key]}% + ${11 - pct[key] * 0.22}px)`;
+
+  // Update display
+  if (key === 'years')   document.getElementById('val-years').textContent = `${val}년`;
+  if (key === 'initial') document.getElementById('val-initial').textContent = val >= 1000 ? `${(val/1000).toFixed(1)}천만원` : `${val}만원`;
+  if (key === 'monthly') document.getElementById('val-monthly').textContent = `${val}만원`;
+  if (key === 'fee')     document.getElementById('val-fee').textContent = `${val.toFixed(1)}%`;
+
+  renderAll();
+}
+
+function onWeight(idx, val) {
+  S.weights[idx] = parseInt(val);
+  const total = S.weights.reduce((a,b) => a+b, 0);
+
+  S.weights.forEach((w, i) => {
+    document.getElementById(`wval-${i}`).textContent = w + '%';
+    document.getElementById(`wfill-${i}`).style.width = `calc(${w}% + ${11 - w * 0.22}px)`;
+  });
+
+  const el = document.getElementById('weight-total');
+  if (total === 100) {
+    el.textContent = '100% ✓';
+    el.className = 'weight-total-val wt-ok';
+  } else {
+    el.textContent = `${total}% ${total > 100 ? '▲ 초과' : '▼ 부족'}`;
+    el.className = 'weight-total-val wt-warn';
+  }
+
+  renderAll();
+}
+
+function onReturn(idx, val) {
+  val = parseInt(val);
+  S.returns[idx] = val;
+  const pct = (val - (-20)) / 80 * 100;
+  document.getElementById(`rval-${idx}`).textContent = fmtPct(val);
+  document.getElementById(`rfill-${idx}`).style.width = `calc(${pct}% + ${11 - pct * 0.22}px)`;
+  renderAll();
+}
+
+// =============================================
+// SCENARIO
+// =============================================
+let SCENARIO_BASE = [12, 22, 18];
+function setScenario(sc) {
+  S.scenario = sc;
+  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.scenario-btn.${sc}`).classList.add('active');
+
+  // Apply preset returns
+  const presets = {
+    bear: [5,  8,  4],
+    base: SCENARIO_BASE,
+    bull: [18, 35, 28],
+  };
+  presets[sc].forEach((v, i) => {
+    S.returns[i] = v;
+    document.getElementById(`rsl-${i}`).value = v;
+    const pct = (v - (-20)) / 80 * 100;
+    document.getElementById(`rval-${i}`).textContent = fmtPct(v);
+    document.getElementById(`rfill-${i}`).style.width = `calc(${pct}% + ${11 - pct * 0.22}px)`;
+  });
+
+  document.getElementById('scenario-desc').innerHTML =
+    `<strong style="color:${sc==='bear'?'var(--red)':sc==='base'?'var(--blue)':'var(--green)'}">${sc==='bear'?'약세':'base'===sc?'기본':'강세'} 시나리오</strong>: ${SCENARIO_LABELS[sc]}`;
+
+  renderAll();
+}
+
+// =============================================
+// INIT
+// =============================================
+document.addEventListener('DOMContentLoaded', () => {
+  ['years','initial','monthly','fee'].forEach(k => onSlider(k, document.getElementById(`sl-${k}`).value));
+  for(let i=0; i<3; i++) {
+    onWeight(i, S.weights[i]);
+    onReturn(i, S.returns[i]);
+  }
+  renderAll();
+  syncRealtimeReturns();
+});
+
+async function syncRealtimeReturns() {
+  const codes = ['091160', '395160', '396500'];
+
+  for (let i = 0; i < codes.length; i++) {
+    try {
+      const res = await fetch(`/api/etf?code=${codes[i]}`);
+      if (!res.ok) throw new Error('API 오류');
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      const retInt = Math.round(Math.max(-20, Math.min(60, data.annualReturn)));
+      S.returns[i] = retInt;
+      SCENARIO_BASE[i] = retInt;
+      document.getElementById(`rsl-${i}`).value = retInt;
+      document.getElementById(`rval-${i}`).textContent = fmtPct(retInt);
+      const pct = (retInt - (-20)) / 80 * 100;
+      document.getElementById(`rfill-${i}`).style.width = `calc(${pct}% + ${11 - pct * 0.22}px)`;
+    } catch (e) {
+      // API 실패 시 기본값 유지
+      console.warn(`ETF ${codes[i]} 실시간 조회 실패:`, e.message);
+    }
+  }
+
+  renderAll();
+}
+</script>
+</body>
+</html>
